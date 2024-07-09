@@ -93,7 +93,7 @@ public class LoginController {
 			}
 		}
 		else
-		{
+		{	
 			cookie.delete("username", rep);
 			cookie.delete("password", rep);
 		}
