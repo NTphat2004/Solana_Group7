@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.Entity.Advertisements;
+import com.example.demo.Entity.NFTs;
 import com.example.demo.Entity.Users;
 import com.example.demo.Service.Cookies;
 import com.example.demo.repository.ADRepository;
+import com.example.demo.repository.NftRepository;
 import com.example.demo.repository.UserRebository;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +41,9 @@ public class HomeController {
 	HttpServletResponse rep;
 	@Autowired
 	ADRepository addao;
+	@Autowired
+	NftRepository nftdao;
+
 	
 	@GetMapping("home")
 	public String getMethodName(Model model) {
@@ -60,15 +65,17 @@ public class HomeController {
 	System.out.println(session.getAttribute("Login"));
 	System.out.println(UsernameSession);
 	model.addAttribute("login", UsernameSession);
-	List<Advertisements> listad = addao.findAll();
-	model.addAttribute("listad", listad);
-//	if(listad!=null)
-//	{
-//		System.out.println("list ko rỗng" + listad.size());
-//		System.out.println(listad.get(0).getAdImageUrl());
-//		System.out.println(listad.get(1).getAdImageUrl());
-//		System.out.println(listad.get(2).getAdImageUrl());
-//	}
+	
+	List<Advertisements> listad1111 = addao.findAll();
+	model.addAttribute("listad1111", listad1111);
+	
+	List<NFTs> listNFT = nftdao.findAll();
+	model.addAttribute("listnft", listNFT);
+	
+	System.out.println(listNFT.get(0).getImageUrl());
+	System.out.println(listNFT.get(2).getImageUrl());
+	
+	
 	
 	
 		return "Home";
@@ -86,7 +93,12 @@ public class HomeController {
 		return "redirect:/home";
 	}
 	
-	
+	@GetMapping("/carousel")
+	public String showCarousel(Model model) {
+	    List<Advertisements> listad1111 = addao.findAll();
+	    model.addAttribute("listad1111", listad1111);
+	    return "carousel"; // the name of your Thymeleaf template
+	}
 	
 
 }

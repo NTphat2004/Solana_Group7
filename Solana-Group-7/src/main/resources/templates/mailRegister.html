@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -15,7 +15,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,500;1,500&display=swap"
+    
         rel="stylesheet">
+         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <style>
         .bgvip {
             background: rgb(4, 4, 4);
@@ -472,7 +474,7 @@
     </style>
 </head>
 
-<body>
+<body >
 
     <div class="container-fluid bgvip p-0">
         <nav class="navbar navbar-expand-lg navbar-sm rounded-4  bg-secondary bg-gradient bg-opacity-10 sticky-top"
@@ -540,7 +542,7 @@
                 </div>
             </div>
         </nav>
-        <article>
+        <article 	>
             <div class="d-flex align-content-center justify-content-center p-5  text-white fs-3"> Verify your email
             </div>
             <div class="d-flex align-content-center justify-content-center p-5  text-white fs-3"> Please enter the code
@@ -548,7 +550,7 @@
             <div class="container  d-flex  justify-content-center align-content-center ">
                 <div class="row p-4 ps-0 pe-0 border border-white  " style="min-width:  900px;">
                     <div class="col-12  ">
-                        <form class="otc" name="one-time-code" action="#">
+                        <form id="formopt"  class="otc" name="one-time-code" action="/signup/inputopt" >
                             <fieldset>
                                 <legend class="text-center">Validation Code</legend>
                                 <div>
@@ -567,9 +569,10 @@
                                 </div>
                               
                             </fieldset>
+                            <input id="hiddeninput" class="opt"  name="opt"   type="hidden" > </input>
                             <div class="d-flex flex-column">
                                 <p class="text-white"> Not in box or spam folder? Resend !</p>
-                                <button href="#" class="btn border-0 rounded  btn-medium"
+                                <button  onclick="optc()"   role="button" class="btn border-0 rounded  btn-medium" id="btn-signup"
                                 style="background: linear-gradient(rgb(104 71 245), rgb(169 91 243)); height: 70px;">Sign
                                 Up</button> 
                             </div>
@@ -594,13 +597,17 @@
 
 </html>
 <script>
+
+
+
     let in1 = document.getElementById('otc-1'),
         ins = document.querySelectorAll('input[type="number"]'),
+      
         splitNumber = function (e) {
             let data = e.data || e.target.value; // Chrome doesn't get the e.data, it's always empty, fallback to value then.
             if (!data) return; // Shouldn't happen, just in case.
             if (data.length === 1) return; // Here is a normal behavior, not a paste action.
-
+         
             popuNext(e.target, data);
             //for (i = 0; i < data.length; i++ ) { ins[i].value = data[i]; }
         },
@@ -664,5 +671,23 @@
      * Handle copy/paste of a big number.
      * It catches the value pasted on the first field and spread it into the inputs.
      */
+     document.getElementById("btn-signup").addEventListener("click", function(event){
+   	  event.preventDefault()
+   	});
+     var otp="";
+       function optc() {
+     	  for (i = 1; i <=6; i++ ) {
+     	    	var e = document.getElementById("otc-"+i);
+     			var value = e.value;
+     			otp +=value;
+     	    }  
+     		alert(otp);
+     		document.getElementById("hiddeninput").value = otp;
+     		 var form = document.getElementById("formopt"); 
+     		 form.submit();
+ 	};
+
     in1.addEventListener('input', splitNumber);
+   
+    
 </script>
