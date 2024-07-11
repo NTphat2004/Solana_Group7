@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <head>
   <meta charset="UTF-8">
@@ -236,7 +236,112 @@ input:valid {
     translate: -8px 0;
   }
 }
+.custom-btn {
+  width: 130px;
+  height: 40px;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+  box-shadow: inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  outline: none;
+  font-size: 15px;
+}
 
+.btn-4 {
+  background-color: #004dff;
+  background-image: linear-gradient(315deg, #03c8a8 0%, #004dff 74%);
+  line-height: 42px;
+  padding: 0;
+  border: none;
+}
+
+.btn-4:hover {
+  background-color: #004dff;
+  background-image: linear-gradient(315deg, #004dff 0%, #03c8a8 74%);
+}
+
+.btn-4 span {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.btn-4:before,
+.btn-4:after {
+  position: absolute;
+  content: "";
+  right: 0;
+  top: 0;
+  box-shadow: 4px 4px 6px 0 rgba(255,255,255,.9),
+              -4px -4px 6px 0 rgba(116, 125, 136, .2), 
+    inset -4px -4px 6px 0 rgba(255,255,255,.9),
+    inset 4px 4px 6px 0 rgba(116, 125, 136, .3);
+  transition: all 0.3s ease;
+}
+
+.btn-4:before {
+  height: 0%;
+  width: .1px;
+}
+
+.btn-4:after {
+  width: 0%;
+  height: .1px;
+}
+
+.btn-4:hover:before {
+  height: 100%;
+}
+
+.btn-4:hover:after {
+  width: 100%;
+}
+
+.btn-4 span:before,
+.btn-4 span:after {
+  position: absolute;
+  content: "";
+  left: 0;
+  bottom: 0;
+  box-shadow: 4px 4px 6px 0 rgba(255,255,255,.9),
+              -4px -4px 6px 0 rgba(116, 125, 136, .2), 
+    inset -4px -4px 6px 0 rgba(255,255,255,.9),
+    inset 4px 4px 6px 0 rgba(116, 125, 136, .3);
+  transition: all 0.3s ease;
+}
+
+.btn-4 span:before {
+  width: .1px;
+  height: 0%;
+}
+
+.btn-4 span:after {
+  width: 0%;
+  height: .1px;
+}
+
+.btn-4 span:hover:before {
+  height: 100%;
+}
+
+.btn-4 span:hover:after {
+  width: 100%;
+}
+ .custom-img {
+            width: 100%;
+            max-width: 150px; /* Tùy chỉnh kích thước tối đa của ảnh */
+            height: auto; /* Giữ tỉ lệ ảnh */
+        }
 </style>
 <body>
     <div class="container-fluid bgvip p-0">
@@ -293,40 +398,51 @@ input:valid {
 
         <div class="col-md-12">
 
-          <div class="card1 w-75 mx-auto row">
+          <div  class="card  mx-auto row" style="background-color: rgb(28, 31, 37);border-radius: 15px; min-height: 300px;">
 
             <div class="col-md-12 ">
 
               <h3 class="text-center fw-bold text-white mt-3 ">List OF Advertisement</h3>
+				<form action="" method="post" class="row">
+				<div class="col-md-12 mt-5  mb-2">
+               <button formaction="/admin/ad" class="custom-btn btn-4 ms-2"><span>To ADD</span></button>
+                </div>
+				</form>
 
-
-              <table class="table table-bordered border-primary mt-5">
-                <thead>
+              <table class="table table-bordered  mt-5">
+                <thead class="table-primary">
                   <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
+                   
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Start date</th>
+                    <th scope="col">End date</th>
+                    <th scope="col">Banner</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                    
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
+                  <tr th:each="ad : ${listadne}" >
+                    <th th:text="${ad.adTitle}"> </th>
+                    <td th:text="${ad.adDescription}"></td>
+                    <td th:text="${ad.startDate}" ></td>
+                    <td th:text="${ad.endDate}"></td>
+                     
+                    <td> <img th:src="@{/images/{img}(img=${ad.adImageUrl})}" class="img-fluid custom-img" alt="..."></td>
+                    <td th:text="${ad.status}"></td>
+                    <td>
+                    
+                    <form action="" method="post">
+                  	<input type="hidden" name="adId" th:value="${ad.adId}">
+                     <button formaction="/admin/ad/edit" class="custom-btn btn-4 ms-2"><span>To Edit</span></button>
+                    
+                    </form>
+                    
+                    </td>
                   </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
-                    <td>@twitter</td>
-                  </tr>
+                 
                 </tbody>
               </table>
 

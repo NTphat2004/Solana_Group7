@@ -28,8 +28,7 @@ public class NFTs {
 	@Column(name = "NFT_ID")
 	private int nftId;
 
-	@Column(name = "Token_ID", nullable = false, length = 255)
-	private String tokenId;
+	
 
 	@Column(name = "Name", nullable = false, length = 255)
 	private String name;
@@ -49,5 +48,8 @@ public class NFTs {
 
 	@Column(name = "Smart_Contract_Address", length = 255)
 	private String smartContractAddress;
+	
+	 @Column(name = "NFT_Address",nullable = false, length = 255)
+	    private String nftAddress;
 
 }
