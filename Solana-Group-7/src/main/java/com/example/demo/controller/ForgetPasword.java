@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ForgetPasword {
 
 	@RequestMapping("/ForgetPasword")
-		public String ForgetPasword() {
+		public String index() {
 		
 		return"ForgetPasword";
 	}
