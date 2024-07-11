@@ -337,99 +337,6 @@ input:valid {
 .btn-4 span:hover:after {
   width: 100%;
 }
-
-.radio-input {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.radio-input * {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-.radio-input label {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 0px 20px;
-  width: 220px;
-  cursor: pointer;
-  height: 50px;
-  position: relative;
-}
-
-.radio-input label::before {
-  position: absolute;
-  content: "";
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 220px;
-  height: 45px;
-  z-index: -1;
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  border-radius: 10px;
-  border: 2px solid transparent;
-}
-.radio-input label:hover::before {
-  transition: all 0.2s ease;
-  background-color: #2a2e3c;
-}
-
-.radio-input .label:has(input:checked)::before {
-  background-color: #2d3750;
-  border-color: #435dd8;
-  height: 50px;
-}
-.radio-input .label .text {
-  color: #fff;
-}
-
-.radio-input .label input[type="radio"] {
-  background-color: #202030;
-  appearance: none;
-  width: 17px;
-  height: 17px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.radio-input .label input[type="radio"]:checked {
-  background-color: #435dd8;
-  -webkit-animation: puls 0.7s forwards;
-  animation: pulse 0.7s forwards;
-}
-
-.radio-input .label input[type="radio"]:before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  transition: all 0.1s cubic-bezier(0.165, 0.84, 0.44, 1);
-  background-color: #fff;
-  transform: scale(0);
-}
-
-.radio-input .label input[type="radio"]:checked::before {
-  transform: scale(1);
-}
-
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
-  }
-  70% {
-    box-shadow: 0 0 0 8px rgba(255, 255, 255, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
-  }
-}
-
 </style>
 <body>
     <div class="container-fluid bgvip p-0">
@@ -485,106 +392,58 @@ input:valid {
       <div class="row mt-5">
 
         <div class="col-md-12">
-			<form action="" th:object="${ad}" method="POST" enctype="multipart/form-data">
-          <div class="card1 w-75 mx-auto row">
-			
+
+          <div class="card1  mx-auto row">
+
             <div class="col-md-12 ">
 
-              <h3 class="text-center fw-bold text-white mt-3 ">Manager Advertisement</h3>
-
+              <h3 class="text-center fw-bold text-white mt-3 ">List OF Accounts</h3>
+				<form action="" method="post" class="row">
+				<div class="col-md-12 mt-5  mb-2">
+               <button formaction="/admin/users" class="custom-btn btn-4 ms-2"><span>To ADD</span></button>
+                </div>
+				</form>
+				
+              <table class="table table-bordered mt-5">
+                <thead class="table-primary text-center">
+                  <tr>
+                    <th scope="col" class="text-danger fw-bold">STT</th>
+                    <th scope="col" class="text-danger fw-bold" >UserName</th>
+                    <th scope="col" class="text-danger fw-bold" >Email</th>
+                    <th scope="col" class="text-danger fw-bold" >Role</th>
+                    <th scope="col" class="text-danger fw-bold" >Wallet_Address</th>
+                    <th scope="col" class="text-primary fw-bold" >Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="user : ${users}">
+                  
+                    <td th:text="${user.userId}"></td>
+                    <td th:text="${user.username}"></td>
+                    <td th:text="${user.email}" ></td>
+                    <td th:text="${user.role}" ></td>
+                    <td th:text="${user.walletAddress}"></td>
+                    <td >
+                    <form action="" method="post">
+                  	<input type="hidden" name="userId" th:value="${user.userId}">
+                     <button formaction="/admin/users/edit" class="custom-btn btn-4 ms-2"><span>To Edit</span></button>
+                    
+                    </form>
+                    </td>
+                    
+                    
+                  </tr>
+                 
+                </tbody>
+              </table>
+				
             </div>
 
-            <div class="col-md-6 text-center">
-
-              <input th:field="*{adTitle}"  class="mt-5 "  type="text" placeholder="AD'S Title">
-              <br>
-				<i style="font-size: 16px;" class="text-danger   fw-bold "  th:errors="*{adTitle}" ></i>
-			 <br>
-              <input th:field="*{startDate}"  class="mt-3 "  type="date" placeholder="AD'S Start Date">
-				<br>
-				<i style="font-size: 16px;" class="text-danger  fw-bold"  th:errors="*{startDate}" ></i>
-           	<br>
-            </div>
-
-            <div class="col-md-6 text-center">
-
-              <input th:field="*{adDescription}" class="mt-5 "  type="text" placeholder="AD'S Description">
-              <br>
-				<i style="font-size: 16px;" class="text-danger fw-bold"  th:errors="*{adDescription}" ></i>
-              <br>
-              <input th:field="*{endDate}" class="mt-3 " type="date" placeholder="AD'S End Date">
-              <br>
-				<i style="font-size: 16px;" class="text-danger fw-bold"  th:errors="*{endDate}" ></i>
-            <br>
-            </div>
-
-            <div class="col-md-6 text-center">
-
-              <input  class="mt-5  " name="file"  type="file" placeholder="AD'S Banner">
-              <br>
-				<i style="font-size: 16px;" class="text-danger fw-bold"  th:errors="*{adImageUrl}" ></i>
-            </div>
-            <div class="col-md-6 text-center">
-					
-						<div class="radio-input mt-5 ms-2">
-  <div class="d-inline">
-  
-  <label class="label">
-    <input
-        type="radio"
-        id="value-1"
-        name="status"
-        th:field="*{status}"
-        value="Đang quảng cáo"
-        class="d-inline kkk"
-        th:checked="${status == 'Đang quảng cáo'}"
-    />
-    <p class="text">Working</p>
-</label>
-
-<label class="label">
-    <input
-       	
-        type="radio"
-        id="value-2"
-        name="status"
-        th:field="*{status}"
-        value="Đang không quảng cáo"
-        class="d-inline kkk"
-       th:checked="${status == 'Đang không quảng cáo'}"
-       
-    />
-    <p class="text">Not Working</p>
-</label>
-
-  </div>
- 
-  
-</div>
-
-
-  <input th:field="*{adId}" class="mt-5 form-control" required="" type="hidden" placeholder="AD'S Banner">
             
 
-            </div>
-
-            <div class="col-md-6 mt-5 text-center mb-5">
-
-              <button type="submit" formaction="/admin/ad/save" class="btn btn-outline-primary fw-bold" >SAVE</button>
-              
-              <button type="submit" formaction="/admin/ad/update" class="btn btn-outline-success fw-bold ms-2">UPDATE</button>
-            
-              <button type="submit" formaction="/admin/ad/clear" class="btn btn-outline-info fw-bold ms-2">CLEAR</button>
-
-            </div>
-            <div class="col-md-6 mt-5">
-
-              <button formaction="/admin/ad/list" class="custom-btn btn-4"><span>To List</span></button>
-
-            </div>
 
           </div>
-			</form>
+
         </div>
 
       </div>

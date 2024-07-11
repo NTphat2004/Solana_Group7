@@ -208,12 +208,12 @@ background-color: rgb(28, 31, 37);
 
 }
 input {
-  width: 410px;
+  width: 350px;
   height: 50px;
   padding: 0 16px;
   background: transparent;
   border-radius: 4px;
-  border: 1px solid #f5f105;
+  border: 1px solid #fe4567;
   color: #f9f9f9;
   animation: shake_541 0.14s 3;
 }
@@ -485,61 +485,58 @@ input:valid {
       <div class="row mt-5">
 
         <div class="col-md-12">
-			<form action="" th:object="${ad}" method="POST" enctype="multipart/form-data">
+
           <div class="card1 w-75 mx-auto row">
-			
+
             <div class="col-md-12 ">
 
-              <h3 class="text-center fw-bold text-white mt-3 ">Manager Advertisement</h3>
+              <h3 class="text-center fw-bold text-white mt-3 ">Manager Account</h3>
+
+            </div >
+			<form th:object="${user}" action="/admin/user" method="post">
+            <div class="col-md-12 text-center">
+	
+              <input class="mt-5" th:field="*{email}" type="text"  placeholder="Their Email">
+				
+              <input class="mt-5 ms-5"  th:field="*{username}" type="text" placeholder="Their Username">
+          
+				<i class="text-danger"  th:errors="*{username}" style="font-size: 13px;"></i>
+            </div>
+
+            <div class="col-md-12 text-center">
+
+              <input class="mt-5 " th:field="*{password}" type="text" placeholder="Their Password">
+           
+				<i class="text-danger"  th:errors="*{password}" style="font-size: 13px;"></i>
+              <input class="mt-5 ms-5" th:field="*{fullname}" type="text" placeholder="Their Fullname">
 
             </div>
 
-            <div class="col-md-6 text-center">
+           <div class="row">
+           
+            <div class="col-md-7 text-center ">
+            
 
-              <input th:field="*{adTitle}"  class="mt-5 "  type="text" placeholder="AD'S Title">
-              <br>
-				<i style="font-size: 16px;" class="text-danger   fw-bold "  th:errors="*{adTitle}" ></i>
-			 <br>
-              <input th:field="*{startDate}"  class="mt-3 "  type="date" placeholder="AD'S Start Date">
-				<br>
-				<i style="font-size: 16px;" class="text-danger  fw-bold"  th:errors="*{startDate}" ></i>
-           	<br>
+              <input class="mt-5 ms-3"  th:field="*{walletAddress}" type="text" placeholder="Their Address Wallet">
+
             </div>
+            <div class="col-md-5">
 
-            <div class="col-md-6 text-center">
-
-              <input th:field="*{adDescription}" class="mt-5 "  type="text" placeholder="AD'S Description">
-              <br>
-				<i style="font-size: 16px;" class="text-danger fw-bold"  th:errors="*{adDescription}" ></i>
-              <br>
-              <input th:field="*{endDate}" class="mt-3 " type="date" placeholder="AD'S End Date">
-              <br>
-				<i style="font-size: 16px;" class="text-danger fw-bold"  th:errors="*{endDate}" ></i>
-            <br>
-            </div>
-
-            <div class="col-md-6 text-center">
-
-              <input  class="mt-5  " name="file"  type="file" placeholder="AD'S Banner">
-              <br>
-				<i style="font-size: 16px;" class="text-danger fw-bold"  th:errors="*{adImageUrl}" ></i>
-            </div>
-            <div class="col-md-6 text-center">
-					
-						<div class="radio-input mt-5 ms-2">
+           
+			
+				<div class="radio-input mt-5">
   <div class="d-inline">
   
   <label class="label">
     <input
         type="radio"
         id="value-1"
-        name="status"
-        th:field="*{status}"
-        value="Đang quảng cáo"
-        class="d-inline kkk"
-        th:checked="${status == 'Đang quảng cáo'}"
+        name="role"
+        th:field="*{role}"
+        value="Admin"
+        class="d-inline"
     />
-    <p class="text">Working</p>
+    <p class="text">Designer</p>
 </label>
 
 <label class="label">
@@ -547,14 +544,14 @@ input:valid {
        	
         type="radio"
         id="value-2"
-        name="status"
-        th:field="*{status}"
-        value="Đang không quảng cáo"
-        class="d-inline kkk"
-       th:checked="${status == 'Đang không quảng cáo'}"
+        name="role"
+        th:field="*{role}"
+        value="User"
+        class="d-inline"
+         th:checked="*{role == 'User'}"
        
     />
-    <p class="text">Not Working</p>
+    <p class="text">Student</p>
 </label>
 
   </div>
@@ -562,29 +559,35 @@ input:valid {
   
 </div>
 
-
-  <input th:field="*{adId}" class="mt-5 form-control" required="" type="hidden" placeholder="AD'S Banner">
+  
+			
+            </div>
+           
+           </div>
+           
+            <div class="col-md-12 text-center">
+			
+			
+			 
+             <input class="mt-5" th:field="*{userId}" type="hidden"  placeholder="Their Email">
             
 
             </div>
 
-            <div class="col-md-6 mt-5 text-center mb-5">
+            <div class="col-md-12 mt-5 text-center mb-5">
 
-              <button type="submit" formaction="/admin/ad/save" class="btn btn-outline-primary fw-bold" >SAVE</button>
+              <button type="submit" formaction="/admin/users/save" class="btn btn-outline-primary fw-bold" >SAVE</button>
               
-              <button type="submit" formaction="/admin/ad/update" class="btn btn-outline-success fw-bold ms-2">UPDATE</button>
+              <button type="submit" formaction="/admin/users/update" class="btn btn-outline-success fw-bold ms-2">UPDATE</button>
+             
+              <button type="submit" formaction="/admin/users/clear"   class="btn btn-outline-info fw-bold ms-2">CLEAR</button>
+              
+               <button formaction="/admin/users/list" class="custom-btn btn-4 ms-2"><span>To List</span></button>
+            </div>
             
-              <button type="submit" formaction="/admin/ad/clear" class="btn btn-outline-info fw-bold ms-2">CLEAR</button>
-
-            </div>
-            <div class="col-md-6 mt-5">
-
-              <button formaction="/admin/ad/list" class="custom-btn btn-4"><span>To List</span></button>
-
-            </div>
-
-          </div>
 			</form>
+          </div>
+
         </div>
 
       </div>
