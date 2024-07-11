@@ -72,8 +72,7 @@ public class HomeController {
 	List<NFTs> listNFT = nftdao.findAll();
 	model.addAttribute("listnft", listNFT);
 	
-	System.out.println(listNFT.get(0).getImageUrl());
-	System.out.println(listNFT.get(2).getImageUrl());
+	
 	
 	
 	
