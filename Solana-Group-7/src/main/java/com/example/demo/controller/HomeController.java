@@ -72,8 +72,7 @@ public class HomeController {
 	List<NFTs> listNFT = nftdao.findAll();
 	model.addAttribute("listnft", listNFT);
 	
-	System.out.println(listNFT.get(0).getImageUrl());
-	System.out.println(listNFT.get(2).getImageUrl());
+	
 	
 	
 	
@@ -93,11 +92,10 @@ public class HomeController {
 		return "redirect:/home";
 	}
 	
-	@GetMapping("/carousel")
-	public String showCarousel(Model model) {
-	    List<Advertisements> listad1111 = addao.findAll();
-	    model.addAttribute("listad1111", listad1111);
-	    return "carousel"; // the name of your Thymeleaf template
+	@RequestMapping("/home/mynft")
+	public String requestMethodName12()
+	{
+		return "myNFT";
 	}
 	
 

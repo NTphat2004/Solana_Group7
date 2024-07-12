@@ -1,0 +1,43 @@
+package com.example.demo.controller;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.example.demo.Entity.Users;
+
+
+@Controller
+public class UserController {
+	
+	@Autowired
+	HttpSession session;
+	
+	@GetMapping("/user/userapp")
+	public String getMethodName1(Model model) {
+		Users UsernameSession =(Users) session.getAttribute("Login");
+		
+		model.addAttribute("login", UsernameSession);
+		
+		
+		return "userAPP";
+	}
+
+	@GetMapping("/user/checkcoin")
+	public String getMethodName(Model model) {
+		
+		Users UsernameSession =(Users) session.getAttribute("Login");
+		System.out.println(session.getAttribute("Login"));
+		System.out.println(UsernameSession);
+		model.addAttribute("login", UsernameSession);
+		
+		
+		return "myCoin";
+	}
+	
+
+}
