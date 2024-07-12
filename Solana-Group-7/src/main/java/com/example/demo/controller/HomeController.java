@@ -92,11 +92,10 @@ public class HomeController {
 		return "redirect:/home";
 	}
 	
-	@GetMapping("/carousel")
-	public String showCarousel(Model model) {
-	    List<Advertisements> listad1111 = addao.findAll();
-	    model.addAttribute("listad1111", listad1111);
-	    return "carousel"; // the name of your Thymeleaf template
+	@RequestMapping("/home/mynft")
+	public String requestMethodName12()
+	{
+		return "myNFT";
 	}
 	
 
