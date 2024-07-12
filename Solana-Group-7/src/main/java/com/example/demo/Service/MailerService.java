@@ -2,9 +2,13 @@ package com.example.demo.Service;
 
 
 
+import javax.mail.MessagingException;
+
 import com.example.demo.Entity.MailInfo;
 
-import javax.mail.MessagingException;
+
+
+
 
 public interface MailerService {
 	void send(MailInfo mail) throws MessagingException;

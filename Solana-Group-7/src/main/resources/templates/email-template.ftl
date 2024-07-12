@@ -1,4 +1,5 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Java Techie Mail</title>
@@ -15,11 +16,12 @@
                         <td align="center" valign="top" bgcolor="#d3be6c"
                             style="background-color: white; opacity: 0.6;  font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; padding: 0px 15px 10px 15px;">
                             <div style="font-size: 48px; color:#000000;">
-                                <b>Bạn có đơn hàng cần thanh toán</b>
+                                <b>Mã otp cho tài khoản gmail ${mail}</b>
                             </div>
 
                             <div style="font-size: 24px; color: #555100;">
-                                <br> Mã Otp là : 123456 <br>
+                               
+                                 <br> Mã Otp là : ${myProperty}  <br>
                             </div>
 
                         </td>
