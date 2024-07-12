@@ -39,5 +39,15 @@ public class UserController {
 		return "myCoin";
 	}
 	
+	@GetMapping("/user/transfer")
+	public String getMethodName11(Model model) {
+		
+		Users UsernameSession =(Users) session.getAttribute("Login");
+		
+		model.addAttribute("login", UsernameSession);
+		
+		
+		return "TransferCoin";
+	}
 
 }

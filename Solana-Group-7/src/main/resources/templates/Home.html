@@ -782,13 +782,17 @@ button:active {
          const provider = window.solana;
          if (provider.isPhantom) {
            let pro = provider.isPhantom
-           console.log("Is Phantom installed?  ", provider.isPhantom);
-         
+           console.log("Is Phantom installed?  ", provider.isPhantom);  
            return provider;
          }
        } else {
+
     	 location.href="https://www.phantom.app/";
       
+
+         document.write('Install https://www.phantom.app/');
+         location.href= "https://www.phantom.app/";
+
        }
      };
 
