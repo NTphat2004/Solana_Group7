@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -484,12 +484,14 @@
                     <div class="col-12 mt-5 ">
                         <p class=" text-white ">Or Sign-Up With Email</p>
                         <hr >
-                        <form action="/doSign" method="post">
+                        <form action="/signup/do"  method="POST">
                         <div class="p-5 pt-0">
                             <div class="mb-3 ">
                                 <label for="exampleFormControlInput1" class="form-label text-center text-white">Your Email</label>
-                                <input type="text" class="form-control input text-white" id="exampleFormControlInput1"
+                                <input    type="text" name="mail" class="form-control input text-white" id="exampleFormControlInput1"
                                     placeholder="abc@gmail.com ">
+                                    <div class="text-danger"  th:text="${error}"> </div>
+                                     
                             </div>
                         
                             <label class="py-3 d-flex flex-wrap justify-content-between">
