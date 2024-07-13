@@ -122,7 +122,7 @@ public class SignUpController {
 			System.out.println(u.getPassword());
 			return "redirect:/home";
 		} catch (Exception e) {
-			// TODO: handle exception
+	
 		}
 
 		return "mailRegister";
