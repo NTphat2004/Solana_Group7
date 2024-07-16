@@ -31,8 +31,12 @@ public class Users {
 	@Column(name = "Username", nullable = false, length = 50)
 	@NotBlank(message = "Please enter UserName")
 	private String username;
+<<<<<<< HEAD
 	
 	
+=======
+
+>>>>>>> branch 'main' of https://github.com/NTphat2004/Solana_Group7.git
 	@Column(name = "Email", nullable = false, length = 100)
 	private String email;
 	
