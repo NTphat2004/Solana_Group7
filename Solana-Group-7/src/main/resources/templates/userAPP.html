@@ -376,8 +376,8 @@ font-size: 20px;
             </li>
           </ul>
 	
-          <form method="get" action=""  class="d-flex">
-            <div  th:if="${ #strings.isEmpty(login)}"  id="pulsa" class="pulsa me-lg-5">
+         <form method="get" action=""  class="d-flex">
+            <div  th:if="${ #strings.isEmpty(session.Login)}"  id="pulsa" class="pulsa me-lg-5">
               <button formaction="/login" id="cta" class="cta">
                 Login <div class="star a"></div>
               <div class="star b"></div>
@@ -392,7 +392,7 @@ font-size: 20px;
             </div>
             
             
-             <div th:if="${not #strings.isEmpty(login)}" id="pulsa" class="pulsa me-lg-5">
+             <div th:if="${not #strings.isEmpty(session.Login)}" id="pulsa" class="pulsa me-lg-5">
               <button formaction="/logout" id="cta" class="cta">
                 Log Out <div class="star a"></div>
               <div class="star b"></div>
@@ -408,7 +408,7 @@ font-size: 20px;
             
             
             
-             <div th:if="${login != null && login.role.contains('Admin')}" id="pulsa" class="pulsa me-lg-5">
+             <div th:if="${session.Login != null && session.Login.role.contains('Admin')}" id="pulsa" class="pulsa me-lg-5">
   <button formaction="/admin" id="cta" class="cta">
     App
     <div class="star a"></div>
@@ -433,7 +433,7 @@ font-size: 20px;
             
           </form>
           <div  class="d-flex">
-          <div th:if="${login != null && #strings.isEmpty(login.walletAddress)}"  id="pulsa" class="pulsa me-lg-5">
+          <div th:if="${session.Login != null && #strings.isEmpty(session.Login.walletAddress)}"  id="pulsa" class="pulsa me-lg-5">
               <button onclick="connectToWallet()" id="cta" class="cta">
                 Connect <div class="star a"></div>
               <div class="star b"></div>
@@ -509,11 +509,11 @@ font-size: 20px;
 
                 
                     <div class="card5">
-                      <div class="card-img">  <button class="blue-btn button">TRANSACTIONS</button> </div>
+                      <div class="card-img">  <button class="blue-btn button">MY NFTs</button> </div>
                         <div class="card-info">
                           <div class="card-text">
-                            <p class="text-title">This is a title</p>
-                            <p class="text-subtitle">This is a subtitle</p>
+                            <p class="text-title">This is MY NFTs</p>
+                           
                           </div>
                           <div class="card-icon">
                             <svg viewBox="0 0 28 25" class="icon">
@@ -537,11 +537,11 @@ font-size: 20px;
   
                   
                   <div class="card5">
-                    <div class="card-img"><button class="red-btn button">OPS TEAM</button> </div>
+                    <div class="card-img"><button class="red-btn button">MY LISTING</button> </div>
                       <div class="card-info">
                         <div class="card-text">
-                          <p class="text-title">This is a title</p>
-                          <p class="text-subtitle">This is a subtitle</p>
+                          <p class="text-title">This is MY LISTING</p>
+                        
                         </div>
                         <div class="card-icon">
                           <svg viewBox="0 0 28 25" class="icon">
@@ -555,11 +555,11 @@ font-size: 20px;
   
                   
                     <div class="card5">
-                      <div class="card-img"><button class="red-btn button">OPS TEAM</button> </div>
+                      <div class="card-img"><button class="red-btn button">TRANSFER NFT</button> </div>
                         <div class="card-info">
                           <div class="card-text">
-                            <p class="text-title">This is a title</p>
-                            <p class="text-subtitle">This is a subtitle</p>
+                            <p class="text-title">This is TRANSFER NFT</p>
+                            
                           </div>
                           <div class="card-icon">
                             <svg viewBox="0 0 28 25" class="icon">
@@ -574,11 +574,11 @@ font-size: 20px;
   
                   
                       <div class="card5">
-                        <div class="card-img">  <button class="blue-btn button">START-UP</button> </div>
+                        <div class="card-img">  <button class="blue-btn button">HISTORY</button> </div>
                           <div class="card-info">
                             <div class="card-text">
-                              <p class="text-title">This is a title</p>
-                              <p class="text-subtitle">This is a subtitle</p>
+                              <p class="text-title">This is HISTORY</p>
+                              <p class="text-subtitle">This is HISTORY</p>
                             </div>
                             <div class="card-icon">
                               <svg viewBox="0 0 28 25" class="icon">

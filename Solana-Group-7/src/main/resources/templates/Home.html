@@ -504,7 +504,7 @@ button:active {
           </ul>
 	
           <form method="get" action=""  class="d-flex">
-            <div  th:if="${ #strings.isEmpty(login)}"  id="pulsa" class="pulsa me-lg-5">
+            <div  th:if="${ #strings.isEmpty(session.Login)}"  id="pulsa" class="pulsa me-lg-5">
               <button formaction="/login" id="cta" class="cta">
                 Login <div class="star a"></div>
               <div class="star b"></div>
@@ -519,7 +519,7 @@ button:active {
             </div>
             
             
-             <div th:if="${not #strings.isEmpty(login)}" id="pulsa" class="pulsa me-lg-5">
+             <div th:if="${not #strings.isEmpty(session.Login)}" id="pulsa" class="pulsa me-lg-5">
               <button formaction="/logout" id="cta" class="cta">
                 Log Out <div class="star a"></div>
               <div class="star b"></div>
@@ -535,7 +535,7 @@ button:active {
             
             
             
-             <div th:if="${login != null && login.role.contains('Admin')}" id="pulsa" class="pulsa me-lg-5">
+             <div th:if="${session.Login != null && session.Login.role.contains('Admin')}" id="pulsa" class="pulsa me-lg-5">
   <button formaction="/admin" id="cta" class="cta">
     App
     <div class="star a"></div>
@@ -560,7 +560,7 @@ button:active {
             
           </form>
           <div  class="d-flex">
-          <div th:if="${login != null && #strings.isEmpty(login.walletAddress)}"  id="pulsa" class="pulsa me-lg-5">
+          <div th:if="${session.Login != null && #strings.isEmpty(session.Login.walletAddress)}"  id="pulsa" class="pulsa me-lg-5">
               <button onclick="connectToWallet()" id="cta" class="cta">
                 Connect <div class="star a"></div>
               <div class="star b"></div>
@@ -625,22 +625,13 @@ button:active {
   
           <div class="row">
 
-            <div class="card mt-5 ms-3">
-             
-              <div class="card-content">
-                
-               <p class="card-title">hover effect
-                </p><p class="card-para">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </div>
+            <div class="card mt-5 ms-3 " th:each="top2nft : ${listtop2}">
+              <img alt="" class="img-fluid mx-auto w-75" th:src="@{'/images/' +${top2nft.imageUrl}}"> 
+             <p class="card-title" th:text="${top2nft.name}"></p>
+             <p class="card-para mt-3">[[${top2nft.price}]]<img class="img" src="../images/icons8-solana-35.png" alt=""> </p>
             </div>
   
-            <div class="card mt-5 ms-3">
-              
-              <div class="card-content">
-                <p class="card-title">hover effect
-                </p><p class="card-para">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </div>
-            </div>
+         
 
           </div>
           
@@ -690,10 +681,18 @@ button:active {
 
           <div class="card11-int">
             <span class="card11__span">Category</span>
-            <div style="background-color: #283542;" class="img-fluid">    <img th:src="@{'/images/' + ${nft.imageUrl}}" alt="..."> </div>
+            <div style="background-color: #283542;" class="img-fluid">
+             <a style="text-decoration: none;" th:href="@{'/nft/detail/' + ${nft.nftId}}">
+                <img th:src="@{'/images/' + ${nft.imageUrl}}" alt="..."> 
+                 </a>
+                
+                
+                </div>
             <div class="card11-data">
-              <p class="title11" th:text="${nft.name}">
-              </p><p>  <span class="fw-bold h5 text-primary">[[${nft.price}]] </span>  <img alt="" src="../images/icons8-solana-35.png"></p>
+                <a style="text-decoration: none;" th:href="@{'/nft/detail/' + ${nft.nftId}}">
+                <p class="title11 text-black" th:text="${nft.name}"></p>
+                 </a>
+              <p>  <span class="fw-bold h5 text-primary">[[${nft.price}]] </span>  <img alt="" src="../images/icons8-solana-35.png"></p>
               <button class="button11">Buy Now</button>
             </div>
         </div>
