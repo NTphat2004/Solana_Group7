@@ -10,6 +10,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
@@ -43,6 +46,7 @@ public class Comments {
 
 	@Column(name = "Comment_Date", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date commentDate;
 
 }

@@ -71,6 +71,7 @@ public class LoginController {
 		}
 		
 		Users find =  userdao.findByUsername(user.getUsername());
+		
 		if(find!=null)
 		{
 			if(user.getPassword().equalsIgnoreCase(find.getPassword()))
@@ -94,6 +95,7 @@ public class LoginController {
 		}
 		else
 		{	
+			System.out.println("loi");
 			cookie.delete("username", rep);
 			cookie.delete("password", rep);
 		}

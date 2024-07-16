@@ -32,7 +32,7 @@ public class Users {
 	@NotBlank(message = "Please enter UserName")
 	private String username;
 	
-	@NotBlank(message = "Please enter email")
+	
 	@Column(name = "Email", nullable = false, length = 100)
 	private String email;
 	

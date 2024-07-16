@@ -19,9 +19,7 @@ public class UserController {
 	
 	@GetMapping("/user/userapp")
 	public String getMethodName1(Model model) {
-		Users UsernameSession =(Users) session.getAttribute("Login");
 		
-		model.addAttribute("login", UsernameSession);
 		
 		
 		return "userAPP";

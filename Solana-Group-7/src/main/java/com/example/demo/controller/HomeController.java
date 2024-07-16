@@ -61,10 +61,7 @@ public class HomeController {
 //				
 //			}	
 //		}	
-	Users UsernameSession =(Users) session.getAttribute("Login");
-	System.out.println(session.getAttribute("Login"));
-	System.out.println(UsernameSession);
-	model.addAttribute("login", UsernameSession);
+	
 	
 	List<Advertisements> listad1111 = addao.findAll();
 	model.addAttribute("listad1111", listad1111);
@@ -72,7 +69,8 @@ public class HomeController {
 	List<NFTs> listNFT = nftdao.findAll();
 	model.addAttribute("listnft", listNFT);
 	
-	
+	List<NFTs> top2nft = nftdao.findTop2ByPrice();
+	model.addAttribute("listtop2", top2nft);
 	
 	
 	
