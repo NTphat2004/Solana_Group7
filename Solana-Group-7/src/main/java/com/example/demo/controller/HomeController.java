@@ -97,6 +97,9 @@ public class HomeController {
 	{
 		return "myNFT";
 	}
-	
+	  @GetMapping("/")
+	    public String index() {
+	        return "BuyNFT";
+	    }
 
 }

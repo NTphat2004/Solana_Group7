@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Mua NFT</title>
+    <script>
+        function buyNft() {
+        	var myHeaders = new Headers();
+        	myHeaders.append("x-api-key", "hmwMl_TgYEitVNxT");
+        	myHeaders.append("Content-Type", "application/json");
+
+        	var raw = JSON.stringify({
+        	  "network": "devnet",
+        	  "metadata_uri": "https://brown-loyal-stoat-734.mypinata.cloud/ipfs/QmR5Tyx3MvpiCKtjTVC4wVzRigpujCv9bnvQKU4ZMQzN5N",
+        	  "max_supply": 0,
+        	  
+        	  "receiver": "4YMTPA7kP8tDj8sQ3sWvtv1ZQuPk6biAerEDsuLVN6RZ",
+        	
+        	 
+        	 
+        	});
+
+        	var requestOptions = {
+        	  method: 'POST',
+        	  headers: myHeaders,
+        	  body: raw,
+        	  redirect: 'follow'
+        	};
+
+        	fetch("https://api.shyft.to/sol/v1/nft/create_from_metadata", requestOptions)
+        	  .then(response => response.text())
+        	  .then(result => console.log(result))
+        	  .catch(error => console.log('error', error));
+        }
+    </script>
+</head>
+<body>
+    <h1>Mua NFT</h1>
+   
+    <button onclick="buyNft()">Mua NFT</button>
+</body>
+</html>

@@ -31,8 +31,7 @@ public class Users {
 	@Column(name = "Username", nullable = false, length = 50)
 	@NotBlank(message = "Please enter UserName")
 	private String username;
-	
-	@NotBlank(message = "Please enter email")
+
 	@Column(name = "Email", nullable = false, length = 100)
 	private String email;
 	

@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -59,6 +60,10 @@ public class LoginController {
 		return "Login";
 	}
 	
+	
+	
+	
+	
 	@PostMapping("/login/do")
 	public String postMethodName(@Valid @ModelAttribute("user") Users user,BindingResult error, Model model,@RequestParam(name = "checked",defaultValue = "")String check) {
 		
@@ -103,6 +108,47 @@ public class LoginController {
 		
 		return "Login";
 	}
+	@PostMapping("/login/find")
+	public String finduser(@Valid @ModelAttribute("user") Users user,BindingResult error, Model model,@RequestParam(name = "checked",defaultValue = "")String check) {
+		
+		int time = check == null ?0:2;
+		System.out.println(time);
+		
+		if(error.hasErrors())
+		{
+			return "Login";
+		}
+		
+		Users find =  userdao.findByUsername(user.getUsername());
+		if(find!=null)
+		{
+			if(user.getPassword().equalsIgnoreCase(find.getPassword()))
+			{
+				session.setAttribute("Login", find);
+				cookie.add("username", user.getUsername(), time, rep);
+				cookie.add("password", user.getPassword(), time, rep);
+				System.out.println(session.getAttribute("Login"));
+				
+					model.addAttribute("login","succses");
+				
+			}
+			else
+			{
+				cookie.delete("username", rep);
+				cookie.delete("password", rep);
+			}
+		}
+		else
+		{	
+			cookie.delete("username", rep);
+			cookie.delete("password", rep);
+		}
+		
+		
+		
+		
+		return "Login";
+	}
 	
 	@RequestMapping("/logout")
 	public String requestMethodName(Model model) {
@@ -112,6 +158,11 @@ public class LoginController {
 		cookie.delete("password", rep);
 		return "redirect:/login";
 	}
+	@GetMapping("/user")
+	public ResponseEntity<Users> finduser(){
+		
+		
+		return null;}
 	
 	
 }
