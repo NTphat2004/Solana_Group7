@@ -17,7 +17,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
  <script src="Base58.js" charset="utf-8"></script>
- 
+         <script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 </head>
 <style>
   .bgvip {
@@ -472,8 +473,8 @@ button:active {
 }
 </style>
 
-<body>
-  <div class="container-fluid bgvip p-0">
+<body ng-app="myApp">
+  <div ng-controller="CustomerController" class="container-fluid bgvip p-0">
     <nav class="navbar navbar-expand-lg navbar-sm   bg-secondary bg-gradient bg-opacity-10 sticky-top"
       style="background-color: transparent;">
       <div class="container-fluid justify-content-between">
@@ -823,6 +824,27 @@ button:active {
      
    
   </script>
+  <script type="text/javascript">
+
+    var app = angular.module("myApp", []);
+    app.controller('CustomerController', function($scope, $http) {
+    	
+    	 $scope.customers =[];
+        $http.get('/user')
+            .then(function(response) {
+            	
+                
+                $scope.customers  = response.data;
+                console.log( $scope.customers);
+              
+            })
+            .catch(function(error) {
+                console.error('Error fetching customers:', error);
+            });
+    });
+  
+   
+</script>
 </body>
 
 </html>

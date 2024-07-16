@@ -17,6 +17,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.css"  rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.js"></script>
+        <script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 
 </head>
 <style>
@@ -339,8 +341,8 @@ input:valid {
 
 </style>
 
-<body>
-  <div class="container-fluid bgvip p-0">
+<body ng-app="myApp">
+  <div ng-controller="CustomerController" class="container-fluid bgvip p-0">
     <nav class="navbar navbar-expand-lg navbar-sm   bg-secondary bg-gradient bg-opacity-10 sticky-top"
       style="background-color: transparent;">
       <div class="container-fluid justify-content-between">
@@ -411,7 +413,7 @@ input:valid {
                             
 
                         </div>
-                        <form action="/login/do" th:object="${user}" method="POST" >
+                        <form action="/login/find" id="form_login" th:object="${user}" method="POST" >
                         <div class="col-md-12 text-center">
 							
                           <input th:field="*{username}" class="mt-5"  type="text" placeholder="Your Email">
@@ -444,7 +446,7 @@ input:valid {
                         </div>
 
                         <div class="col-md-12 mt-4 text-center">
-<!-- data-modal-target="default-modal" data-modal-toggle="default-modal" -->
+
                           <button  type="submit" style="width: 410px;" class="btn btn-outline-danger fw-bold">Login</button>
 
                         </div>
@@ -472,9 +474,8 @@ input:valid {
         </div>
       
       
-      
+    
       <!-- Modal toggle -->
-
 
 <!-- Main modal -->
 <div id="default-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -484,7 +485,7 @@ input:valid {
             <!-- Modal header -->
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                    Terms of Service
+                   {{status}}
                 </h3>
                 <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -604,7 +605,58 @@ input:valid {
 
 
 
+  <button   id="nut213"  data-modal-target="default-modal" data-modal-toggle="default-modal"  type="button">
+    Toggle modal
+  </button>
 
 </body>
 
 </html>
+<script type="text/javascript">
+
+    var app = angular.module("myApp", []);
+    app.controller('CustomerController', function($scope, $http,$rootScope) {
+    	
+    	 $scope.customers =[];
+        $http.get('/user')
+            .then(function(response) {
+            	
+            	
+            	$rootScope.login = sessionStorage.getItem('loginStatus');
+            	$scope.status=sessionStorage.getItem('status');
+            	console.log($rootScope.login);
+                $scope.customers  = response.data;
+                if($scope.customers.username!=null){
+                	if($rootScope.login=="1")	{
+                		var millisecondsToWait = 500;
+                		setTimeout(function() {                			
+                			sessionStorage.setItem('status', "Login Succsess");
+                			  document.getElementById("nut213").click(); 
+                			  console.log( $scope.status +" alo" );
+                		}, millisecondsToWait);
+                		 console.log( "real 1"); 
+               	 	  console.log( document.querySelector("#nut213").innerHTML );                  		
+                		var millisecondsToWait2 = 2000;
+                		setTimeout(function() {
+                			 location.href="http://localhost:8080/home";
+                			 console.log( $scope.customers.username);  
+                		}, millisecondsToWait2);
+
+                	}else{
+                		console.log( "real 2");
+                		 var form = document.getElementById("form_login"); 
+                		 form.submit();
+                		 sessionStorage.setItem('loginStatus', "1");	 
+                	}
+              }else {
+            	  sessionStorage.setItem('loginStatus', "0");
+            	  console.log( "real 3");
+          		}
+            })
+            .catch(function(error) {
+                console.log('Error fetching customers:', error);
+            });
+    });
+  
+   
+</script>

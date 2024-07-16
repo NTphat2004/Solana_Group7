@@ -23,12 +23,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-
-
-
 @Controller
 public class LoginController {
-	
+
 	@Autowired
 	UserRebository userdao;
 	@Autowired
@@ -39,130 +36,113 @@ public class LoginController {
 	HttpServletRequest req;
 	@Autowired
 	Cookies cookie;
-	
+
 	@RequestMapping("login")
 	public String getMethodName(Model model) {
-        Users user = new Users();
+		Users user = new Users();
 		String username = cookie.get("username", req);
 		String password = cookie.get("password", req);
 		System.out.println(username);
 		System.out.println(password);
-		if(username!=null || password !=null)
-		{	
+		if (username != null || password != null) {
 			user.setUsername(username);
 			user.setPassword(password);
 			model.addAttribute("check", true);
 			model.addAttribute("user", user);
-		}
-		else {
+		} else {
 			model.addAttribute("user", new Users());
 		}
 		return "Login";
 	}
-	
-	
-	
-	
-	
+
 	@PostMapping("/login/do")
-	public String postMethodName(@Valid @ModelAttribute("user") Users user,BindingResult error, Model model,@RequestParam(name = "checked",defaultValue = "")String check) {
-		
-		int time = check == null ?0:2;
+	public String postMethodName(@Valid @ModelAttribute("user") Users user, BindingResult error, Model model,
+			@RequestParam(name = "checked", defaultValue = "") String check) {
+
+		int time = check == null ? 0 : 2;
 		System.out.println(time);
-		
-		if(error.hasErrors())
-		{
+
+		if (error.hasErrors()) {
 			return "Login";
 		}
-		
-		Users find =  userdao.findByUsername(user.getUsername());
-		if(find!=null)
-		{
-			if(user.getPassword().equalsIgnoreCase(find.getPassword()))
-			{
+
+		Users find = userdao.findByUsername(user.getUsername());
+		if (find != null) {
+			if (user.getPassword().equalsIgnoreCase(find.getPassword())) {
 				session.setAttribute("Login", find);
 				cookie.add("username", user.getUsername(), time, rep);
 				cookie.add("password", user.getPassword(), time, rep);
 				System.out.println(session.getAttribute("Login"));
-				if(find.getRole().equals("Admin"))
-				{
+				if (find.getRole().equals("Admin")) {
 					System.out.println("this is admin");
 					return "redirect:/admin";
 				}
 				return "redirect:/home";
-			}
-			else
-			{
+			} else {
 				cookie.delete("username", rep);
 				cookie.delete("password", rep);
 			}
-		}
-		else
-		{	
+		} else {
 			cookie.delete("username", rep);
 			cookie.delete("password", rep);
 		}
-		
-		
-		
-		
+
 		return "Login";
 	}
+
 	@PostMapping("/login/find")
-	public String finduser(@Valid @ModelAttribute("user") Users user,BindingResult error, Model model,@RequestParam(name = "checked",defaultValue = "")String check) {
-		
-		int time = check == null ?0:2;
+	public String finduser(@Valid @ModelAttribute("user") Users user, BindingResult error, Model model,
+			@RequestParam(name = "checked", defaultValue = "") String check) {
+
+		int time = check == null ? 0 : 2;
 		System.out.println(time);
-		
-		if(error.hasErrors())
-		{
+
+		if (error.hasErrors()) {
 			return "Login";
 		}
-		
-		Users find =  userdao.findByUsername(user.getUsername());
-		if(find!=null)
-		{
-			if(user.getPassword().equalsIgnoreCase(find.getPassword()))
-			{
+
+		Users find = userdao.findByUsername(user.getUsername());
+		if (find != null) {
+			if (user.getPassword().equalsIgnoreCase(find.getPassword())) {
 				session.setAttribute("Login", find);
 				cookie.add("username", user.getUsername(), time, rep);
 				cookie.add("password", user.getPassword(), time, rep);
 				System.out.println(session.getAttribute("Login"));
-				
-					model.addAttribute("login","succses");
-				
-			}
-			else
-			{
+
+				model.addAttribute("login", "succses");
+
+			} else {
 				cookie.delete("username", rep);
 				cookie.delete("password", rep);
 			}
-		}
-		else
-		{	
+		} else {
 			cookie.delete("username", rep);
 			cookie.delete("password", rep);
 		}
-		
-		
-		
-		
+
 		return "Login";
 	}
-	
+
 	@RequestMapping("/logout")
 	public String requestMethodName(Model model) {
-		
+
 		session.removeAttribute("Login");
 		cookie.delete("username", rep);
 		cookie.delete("password", rep);
 		return "redirect:/login";
 	}
+
 	@GetMapping("/user")
-	public ResponseEntity<Users> finduser(){
-		
-		
-		return null;}
-	
-	
+	public ResponseEntity<?> finduser() {
+
+		String username = cookie.get("username", req);
+		if (username != null) {
+			Users u = userdao.findByUsername(username);
+			return ResponseEntity.ok(u);
+		} else {
+			return null;
+		}
+
+	}
+
 }
