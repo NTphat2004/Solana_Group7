@@ -47,5 +47,16 @@ public class UserController {
 		
 		return "TransferCoin";
 	}
+	
+	@GetMapping("/user/language")
+	public String getMethodName11111() {
+		return "SettingLanguage";
+	}
+	
+	@GetMapping("/user/mynft")
+	public String getMethodName111111(Model model) {
+		
+		return "myNFT";
+	}
 
 }

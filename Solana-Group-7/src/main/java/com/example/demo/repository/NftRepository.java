@@ -11,5 +11,7 @@ import com.example.demo.Entity.Users;
 public interface NftRepository extends JpaRepository<NFTs, Integer> {
 	   @Query(value = "SELECT TOP 2 * FROM NFTs ORDER BY Price DESC", nativeQuery = true)
 	    List<NFTs> findTop2ByPrice();
-	
+	   
+	   @Query("SELECT n FROM NFTs  n where n.nftId = ?1")
+	   NFTs findbynftId(Integer id);
 }

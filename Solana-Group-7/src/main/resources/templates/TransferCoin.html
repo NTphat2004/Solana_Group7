@@ -553,7 +553,7 @@ input:valid {
 
           <div class="card1 w-75 mx-auto row">
 					
-			<h1 class="fw-bold text-center mt-5 text-white">This is your amount Solana Coin</h1>
+			<h1 class="fw-bold text-center mt-5 text-white">This is Transfer Solana Coin</h1>
     
           
            
@@ -564,18 +564,38 @@ input:valid {
               
             </div>
             
-            <div th:if="${login != null && !#strings.isEmpty(login.walletAddress)}" class="text-center mt-5 mb-5 ">
+            <div th:if="${login != null && !#strings.isEmpty(login.walletAddress)}" class="text-center mt-3 mb-5 ">
              
-             <p>Nhập số  wallet Adress B </p>
-              <input type="text" placeholder="Sol to send" id="walletb" value="4YMTPA7kP8tDj8sQ3sWvtv1ZQuPk6biAerEDsuLVN6RZ" />
-             
+            <div class="row mt-4">
             
-              <input type="text" placeholder="Sol to send" id="quantity" value="0.1" />
-				 <input type="text" id="walleta" th:value="${login.walletAddress}">
-				 <br>
-    			<button type="button" class="btn btn-danger" onclick="sendSOLtoWallet()">Send</button>
-    			
-         		<span id="status_text"></span>
+             <div class="col-md-6 ">
+             
+  				
+                <input id="walletAddressInput" type="hidden" th:value="${login.walletAddress}">
+			
+				<input  class="mt-3" id="receiverAddress"  type="text" placeholder="Their Wallet Address">
+				<br>			
+              <input  class="mt-5" id="quantity" type="number" placeholder="Amount Coin" value="0.1"  />
+				<br>	
+				<button class="btn mt-4 btn-danger " onclick="sendSOLtoWallet()">Send Coin</button>		   
+			
+         		 <p id="status_text" class="text-primary"></p>
+    
+
+    
+    
+    
+              
+             </div>
+             <div class="col-md-6 " >
+             
+  
+			 <img class="img-fluid mt-3" alt="" src="../images/bannersolana.png">
+           
+              
+             </div>
+            
+            </div>
          		
          		
            </div>
@@ -595,77 +615,89 @@ input:valid {
 
 
     </div>
-   <script>
-    var wallet = document.getElementById("walleta").value;;
-   const receiverAddress = document.getElementById("walletb").value;
-    // const receiverAddress = "Fak1FgM3Fwc5xHhqrpSbhxu5dZBWNfGexH5XZqiasgae";
-
-   
-
-    async function sendSOLtoWallet() {
-        const quantity = parseFloat(document.getElementById("quantity").value);
-        console.log(quantity);
-
-        if (quantity > 0) {
-            document.getElementById("status_text").innerText = "Sending " + quantity + " SOL to " + receiverAddress + " account address";
-            await signInTransactionAndSendMoney(receiverAddress, quantity)
-        } else {
-            document.getElementById("status_text").innerText = "SOL > 0!"
-        }
-    }
-
-    function signInTransactionAndSendMoney(destPubkeyStr, quantity) {
-        (async () => {
-            const network = "https://api.devnet.solana.com";
-            const connection = new solanaWeb3.Connection(network);
-            const transaction = new solanaWeb3.Transaction();
-        
-            try {
-                const N_lamports = quantity * solanaWeb3.LAMPORTS_PER_SOL;
-                console.log(N_lamports);
-          
-                console.log("starting sendMoney");
-                const destPubkey = new solanaWeb3.PublicKey(destPubkeyStr);
-
-                const instruction = solanaWeb3.SystemProgram.transfer({
-                    fromPubkey: wallet.publicKey,
-                    toPubkey: destPubkey,
-                    lamports: N_lamports,
-                });
-                let trans = await setWalletTransaction(instruction, connection);
-          
-                let signature = await signAndSendTransaction(
-                    wallet,
-                    trans,
-                    connection
-                );
-            } 
-            catch (e) {
-                console.warn("Failed", e);
-            }
-        })();
-        
-        async function setWalletTransaction(instruction, connection) {
-            const transaction = new solanaWeb3.Transaction();
-            transaction.add(instruction);
-            transaction.feePayer = wallet.publicKey;
-            let hash = await connection.getRecentBlockhash();
-            console.log("blockhash", hash);
-            transaction.recentBlockhash = hash.blockhash;
-            return transaction;
-        }
+  
       
-        async function signAndSendTransaction(wallet, transaction, connection) {
-            // Sign transaction, broadcast, and confirm
-            const { signature } = await window.solana.signAndSendTransaction(
-                transaction
-            );
-            await connection.confirmTransaction(signature);
-            return signature;
-        }
+   <script>
+  var wallet;
+
+  async function sendSOLtoWallet() {
+    const walletAddress = document.getElementById("walletAddressInput").value.trim();
+    const receiverAddress = document.getElementById("receiverAddress").value;
+    const quantity = parseFloat(document.getElementById("quantity").value);
+
+    try {
+      if (!walletAddress) {
+        throw new Error("Please enter a valid wallet address!");
+      }
+
+      wallet = { publicKey: new solanaWeb3.PublicKey(walletAddress) };
+      document.getElementById("status_text").innerText = "Connected";
+
+      if (quantity > 0 && wallet && wallet.publicKey) {
+        document.getElementById("status_text").innerText = "Sending " + quantity + " SOL to " + receiverAddress + " account address";
+        await signInTransactionAndSendMoney(receiverAddress, quantity);
+      } else if (!wallet || !wallet.publicKey) {
+        document.getElementById("status_text").innerText = "Please enter a valid wallet address!";
+      } else {
+        document.getElementById("status_text").innerText = "SOL must be greater than 0!";
+      }
+    } catch (err) {
+      console.error('Error connecting wallet:', err);
+      alert(err.message);
     }
+  }
 
+  async function signInTransactionAndSendMoney(destPubkeyStr, quantity) {
+    const network = "https://api.devnet.solana.com";
+    const connection = new solanaWeb3.Connection(network);
+    const transaction = new solanaWeb3.Transaction();
 
+    try {
+      const N_lamports = quantity * solanaWeb3.LAMPORTS_PER_SOL;
+      console.log(N_lamports);
+
+      console.log("starting sendMoney");
+      const destPubkey = new solanaWeb3.PublicKey(destPubkeyStr);
+
+      const instruction = solanaWeb3.SystemProgram.transfer({
+        fromPubkey: wallet.publicKey,
+        toPubkey: destPubkey,
+        lamports: N_lamports,
+      });
+      let trans = await setWalletTransaction(instruction, connection);
+
+      let signature = await signAndSendTransaction(
+        wallet,
+        trans,
+        connection
+      );
+      alert("thanh cong");
+    } catch (e) {
+      console.warn("Failed", e);
+    }
+  }
+
+  async function setWalletTransaction(instruction, connection) {
+    const transaction = new solanaWeb3.Transaction();
+    transaction.add(instruction);
+    transaction.feePayer = wallet.publicKey;
+    let hash = await connection.getRecentBlockhash();
+    console.log("blockhash", hash);
+    transaction.recentBlockhash = hash.blockhash;
+    return transaction;
+  }
+
+  async function signAndSendTransaction(wallet, transaction, connection) {
+    // Sign transaction, broadcast, and confirm
+    const { signature } = await window.solana.signAndSendTransaction(
+      transaction
+    );
+    await connection.confirmTransaction(signature);
+    return signature;
+  }
 </script>
+
+  
+  
 </body>
 </html>

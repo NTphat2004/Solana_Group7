@@ -44,8 +44,7 @@ public class LoginController {
         Users user = new Users();
 		String username = cookie.get("username", req);
 		String password = cookie.get("password", req);
-		System.out.println(username);
-		System.out.println(password);
+		
 		if(username!=null || password !=null)
 		{	
 			user.setUsername(username);
@@ -62,7 +61,8 @@ public class LoginController {
 	@PostMapping("/login/do")
 	public String postMethodName(@Valid @ModelAttribute("user") Users user,BindingResult error, Model model,@RequestParam(name = "checked",defaultValue = "")String check) {
 		
-		int time = check == null ?0:2;
+		int time = check.equals("true")?2:0;
+		System.out.println(check+"ga");
 		System.out.println(time);
 		
 		if(error.hasErrors())
