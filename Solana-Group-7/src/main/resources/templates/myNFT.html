@@ -512,10 +512,10 @@ button:active {
         </div>
       </div>
       <div class="container-lg">
-        <div class="row" id="nft-container">
+        <div th:if="${login != null && !#strings.isEmpty(login.walletAddress)}" class="row" id="nft-container">
           <!-- NFT cards will be appended here -->
         </div>
-        <div class="row mt-4">
+        <div th:if="${login != null && #strings.isEmpty(login.walletAddress)}"  class="row mt-4">
           <div class="col-12 text-center">
             <button class="btn btn-primary" onclick="fetchNFTs(event)">Get NFTs</button>
           </div>
