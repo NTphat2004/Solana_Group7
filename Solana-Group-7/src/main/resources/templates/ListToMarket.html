@@ -361,7 +361,7 @@ input:valid {
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active fw-bold text-white" aria-current="page" href="/home">MARKET PLACE</a>
+              <a class="nav-link active fw-bold text-white" aria-current="page" href="#!trangchu">MARKET PLACE</a>
             </li>
             <li class="nav-item ms-2">
               <a class="nav-link fw-bold text-white" href="/user/userapp">MY APP</a>
@@ -454,66 +454,115 @@ input:valid {
       </div>
     </nav>
     <article>
-
-      <div class="row mt-5">
-
-        <div class="col-md-12">
-
-          <div  class="card  mx-auto w-75 row" style="background-color: rgb(28, 31, 37);border-radius: 15px; min-height: 300px;">
-
-            <div class="col-md-12 ">
-
-              <h3 class="text-center fw-bold text-white mt-3 ">List OF Advertisement</h3>
-				
-
-              <table class="table table-bordered  mt-5">
-                <thead class="table-primary">
-                  <tr class="text-center">
-                   
-                    <th scope="col">IMAGE</th>
-                    <th scope="col">NAME</th>
-                    <th scope="col">PRICE</th>                
-                    <th scope="col">Action</th>
-                    
-                  </tr>
-                </thead>
-                <tbody >
-                  <tr  class="text-center" th:each="listf : ${listf}">
-                    
-                    
-                     
-                    <td class="align-middle"> <img  class="img-fluid custom-img" th:src="@{{img}(img=${listf.nft.imageUrl})}" alt="..."></td>
-                   <td class="align-middle" th:text="${listf.nft.name}" ></td>
-                   <td class="align-middle"  >[[${listf.nft.price}]] <img alt="" src="/images/icons8-solana-35.png"> </td> 
-                    <td class="align-middle" >
-                    
-                    <form action="" method="post">
-                  	<input type="hidden" name="fId" th:value="${listf.favoriteId}" >
-                     <button formaction="/user/favorite/delete" class="custom-btn btn-4 ms-2"><span>Delete</span></button>
-                    
-                    </form>
-                    
-                    </td>
-                  </tr>
-                 
-                </tbody>
-              </table>
-
-
-            </div>
-
-            
-
-
-          </div>
-
-        </div>
-
+    <div class="row">
+      <div class="py-4 text-center">
+        <h1>List All Your NFTs</h1>
+        <p>This is a sample project which will list all your NFTs associated with your wallet</p>
       </div>
-      
-    </article>
+    </div>
+    <input type="hidden" id="walletkkk" th:value="${session.Login.walletAddress}">
+    <div class="container-lg">
+      <div th:if="${session.Login != null && !#strings.isEmpty(session.Login.walletAddress)}" class="row" id="nft-container">
+        <!-- NFT cards will be appended here -->
+        
+      </div>
+      <div th:if="${session.Login != null && #strings.isEmpty(session.Login.walletAddress)}" class="row mt-4">
+        <div class="col-12 text-center">
+          <p>chưa kết nối ví</p>
+        </div>
+      </div>
+    </div>
+  </article>
 
 
     </div>
+     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.16.0/lib/index.iife.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@solana/wallet-adapter-phantom@0.8.0/lib/index.iife.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+      let wallID = document.getElementById("walletkkk").value;  // Thay bằng địa chỉ ví của bạn
+      const xKey = "0ZZi5a0Eo89-knJM";
+      const network = "devnet";
+
+      const fetchNFTs = async () => {
+        let nftUrl = `https://api.shyft.to/sol/v1/nft/read_all?network=${network}&address=${wallID}`;
+        try {
+          const response = await axios.get(nftUrl, {
+            headers: {
+              "Content-Type": "application/json",
+              "x-api-key": xKey,
+            },
+          });
+          const data = response.data;
+
+          // Xóa các kết quả trước đó
+          const nftContainer = document.getElementById('nft-container');
+          nftContainer.innerHTML = '';
+
+          // Lặp qua các NFT đã fetch và thêm vào container
+          data.result.forEach(item => {
+            const nftCard = `
+              <div class="col-md-4 mb-4">
+                <div class="card card11">
+                  <div class="card11-int">
+                    <span class="card11__span text-danger">Category</span>
+                    <div class="img-fluid">
+                      <img src="${item.image_uri}" class="card-img-top img1" alt="${item.name}">
+                    </div>
+                    <div class="card11-data">
+                      <p class="card-title title11 text-danger">${item.name}</p>
+                      <p class="card-text text-danger">${item.description || "No description available."}</p>
+                      <button class="btn btn-primary button11" onclick="list_gasless('${item.mint}')">LIST</button>
+                    </div>
+                  </div>
+                </div>
+              </div>`;
+            nftContainer.innerHTML += nftCard;
+          });
+
+        } catch (err) {
+          console.warn(err);
+        }
+      };
+
+      // Gọi hàm fetchNFTs khi trang HTML được mở
+      fetchNFTs();
+    });
+
+    function list_gasless(nftAddress) {
+      var myHeaders = new Headers();
+      let walletInput = document.getElementById("walletkkk").value;
+      console.log(walletInput);
+      console.log(nftAddress);
+      myHeaders.append("x-api-key", "hmwMl_TgYEitVNxT");
+      myHeaders.append("Content-Type", "application/json");
+
+      var raw = JSON.stringify({
+        "network": "devnet",
+        "marketplace_address": "B4onhZgF5DZnEtpvjaXSz2CwFv5ADkEmPqwpmeLxU1sA",
+        "nft_address": nftAddress,
+        "price": 0.3,
+        "seller_wallet": walletInput,
+        "service_charge": {
+          "receiver": walletInput,
+          "amount": 0.01
+        }
+      });
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      };
+
+      fetch("https://api.shyft.to/sol/v1/marketplace/list", requestOptions)
+        .then(response => response.text())
+        .then(result => console.table(result))
+        .catch(error => console.log('error', error));
+    }
+  </script>
 </body>
 </html>

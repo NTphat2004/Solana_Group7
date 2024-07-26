@@ -457,11 +457,11 @@ button:active {
 </style>
 <body>
     <div class="container-fluid bgvip p-0">
-      <nav class="navbar navbar-expand-lg navbar-sm   bg-secondary bg-gradient bg-opacity-10 sticky-top"
+     <nav class="navbar navbar-expand-lg navbar-sm   bg-secondary bg-gradient bg-opacity-10 sticky-top"
       style="background-color: transparent;">
       <div class="container-fluid justify-content-between">
         <a class="navbar-brand d-flex align-items-center" href="layout.html">
-          <img src="images/icons8-axie-infinity-41.png" alt="">
+          <img src="../images/icons8-axie-infinity-41.png" alt="">
           <span class="ms-2 text-white">Market NFTs</span>
         </a>
 
@@ -473,22 +473,22 @@ button:active {
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active fw-bold text-white" aria-current="page" href="#!trangchu">MARKET PLACE</a>
+              <a class="nav-link active fw-bold text-white" aria-current="page" href="/home">MARKET PLACE</a>
             </li>
             <li class="nav-item ms-2">
-              <a class="nav-link fw-bold text-white" href="#!baithi">INTRODUCE</a>
+              <a class="nav-link fw-bold text-white" href="/user/userapp">MY APP</a>
             </li>
             <li class="nav-item ms-2">
               <a class="nav-link fw-bold text-white" href="#!gioithieu">CONTACT US</a>
             </li>
             <li class="nav-item ms-2">
-              <a class="nav-link fw-bold text-white" href="#!gioithieu">My NFTs</a>
+              <a class="nav-link fw-bold text-white" href="/user/mynft">My NFTs</a>
             </li>
           </ul>
-
-          <form class="d-flex">
-            <div id="pulsa" class="pulsa me-lg-5">
-              <button id="cta" class="cta">
+	
+          <form method="get" action=""  class="d-flex">
+            <div  th:if="${ #strings.isEmpty(session.Login)}"  id="pulsa" class="pulsa me-lg-5">
+              <button formaction="/login" id="cta" class="cta">
                 Login <div class="star a"></div>
               <div class="star b"></div>
               <div class="star c"></div>
@@ -500,7 +500,68 @@ button:active {
               </button>
               
             </div>
+            
+            
+             <div th:if="${not #strings.isEmpty(session.Login)}" id="pulsa" class="pulsa me-lg-5">
+              <button formaction="/logout" id="cta" class="cta">
+                Log Out <div class="star a"></div>
+              <div class="star b"></div>
+              <div class="star c"></div>
+              <div class="star d"></div>
+              <div class="star e"></div>
+              <div class="star f"></div>
+              <div class="star g"></div>
+              <svg version="1.1" viewBox="0 0 1024 1024" width="24px" class="rocket"><path fill="#3A7EB9" d="M662.72 462.784l136.448 169.408v173.248l-136.448-48.32zM342.72 457.344L206.272 626.816v173.248l136.448-48.384z"></path><path fill="#D48171" d="M570.688 418.688l-142.848 1.152a266.496 266.496 0 0 1-20.288-0.576l3.712 448.64c0.256 28.928 94.272 130.048 94.272 130.048s93.888-102.656 93.632-131.584l-3.712-448.96a344.64 344.64 0 0 1-24.768 1.28z"></path><path fill="#E9DF92" d="M531.456 599.296l-63.04 0.576c-3.008 0-5.952-0.064-8.96-0.384l2.176 257.792c0.128 16.64 41.728 74.816 41.728 74.816s41.344-58.944 41.28-75.52l-2.176-257.92c-3.648 0.384-7.296 0.64-11.008 0.64z"></path><path fill="#B5D5EB" d="M554.304 93.568a324.352 324.352 0 0 0-110.592 1.728L342.72 240.768v584.512c13.824-0.96 27.968-1.536 42.368-1.536h245.248c11.84 0 23.36 0.384 34.816 1.024V253.312L554.304 93.568z"></path><path fill="#3A7EB9" d="M541.44 94.144L500.416 35.008l-45.696 59.136v29.504h89.024v-29.504zM459.456 288.64h88.96v88.896h-88.96zM459.456 467.456h88.96v88.96h-88.96zM459.456 634.176h88.96v88.896h-88.96zM364.928 788.736h277.76v44.352h-277.76z"></path></svg>
+              </button>
+              
+            </div>
+            
+            
+            
+             <div th:if="${session.Login != null && session.Login.role.contains('Admin')}" id="pulsa" class="pulsa me-lg-5">
+  <button formaction="/admin" id="cta" class="cta">
+    App
+    <div class="star a"></div>
+    <div class="star b"></div>
+    <div class="star c"></div>
+    <div class="star d"></div>
+    <div class="star e"></div>
+    <div class="star f"></div>
+    <div class="star g"></div>
+    <svg version="1.1" viewBox="0 0 1024 1024" width="24px" class="rocket">
+      <path fill="#3A7EB9" d="M662.72 462.784l136.448 169.408v173.248l-136.448-48.32zM342.72 457.344L206.272 626.816v173.248l136.448-48.384z"></path>
+      <path fill="#D48171" d="M570.688 418.688l-142.848 1.152a266.496 266.496 0 0 1-20.288-0.576l3.712 448.64c0.256 28.928 94.272 130.048 94.272 130.048s93.888-102.656 93.632-131.584l-3.712-448.96a344.64 344.64 0 0 1-24.768 1.28z"></path>
+      <path fill="#E9DF92" d="M531.456 599.296l-63.04 0.576c-3.008 0-5.952-0.064-8.96-0.384l2.176 257.792c0.128 16.64 41.728 74.816 41.728 74.816s41.344-58.944 41.28-75.52l-2.176-257.92c-3.648 0.384-7.296 0.64-11.008 0.64z"></path>
+      <path fill="#B5D5EB" d="M554.304 93.568a324.352 324.352 0 0 0-110.592 1.728L342.72 240.768v584.512c13.824-0.96 27.968-1.536 42.368-1.536h245.248c11.84 0 23.36 0.384 34.816 1.024V253.312L554.304 93.568z"></path>
+      <path fill="#3A7EB9" d="M541.44 94.144L500.416 35.008l-45.696 59.136v29.504h89.024v-29.504zM459.456 288.64h88.96v88.896h-88.96zM459.456 467.456h88.96v88.96h-88.96zM459.456 634.176h88.96v88.896h-88.96zM364.928 788.736h277.76v44.352h-277.76z"></path>
+    </svg>
+  </button>
+</div>
+            
+            
+            
+            
           </form>
+          <div  class="d-flex">
+          <div th:if="${session.Login != null && #strings.isEmpty(session.Login.walletAddress)}"  id="pulsa" class="pulsa me-lg-5">
+              <button onclick="connectToWallet()" id="cta" class="cta">
+                Connect <div class="star a"></div>
+              <div class="star b"></div>
+              <div class="star c"></div>
+              <div class="star d"></div>
+              <div class="star e"></div>
+              <div class="star f"></div>
+              <div class="star g"></div>
+              <svg version="1.1" viewBox="0 0 1024 1024" width="24px" class="rocket"><path fill="#3A7EB9" d="M662.72 462.784l136.448 169.408v173.248l-136.448-48.32zM342.72 457.344L206.272 626.816v173.248l136.448-48.384z"></path><path fill="#D48171" d="M570.688 418.688l-142.848 1.152a266.496 266.496 0 0 1-20.288-0.576l3.712 448.64c0.256 28.928 94.272 130.048 94.272 130.048s93.888-102.656 93.632-131.584l-3.712-448.96a344.64 344.64 0 0 1-24.768 1.28z"></path><path fill="#E9DF92" d="M531.456 599.296l-63.04 0.576c-3.008 0-5.952-0.064-8.96-0.384l2.176 257.792c0.128 16.64 41.728 74.816 41.728 74.816s41.344-58.944 41.28-75.52l-2.176-257.92c-3.648 0.384-7.296 0.64-11.008 0.64z"></path><path fill="#B5D5EB" d="M554.304 93.568a324.352 324.352 0 0 0-110.592 1.728L342.72 240.768v584.512c13.824-0.96 27.968-1.536 42.368-1.536h245.248c11.84 0 23.36 0.384 34.816 1.024V253.312L554.304 93.568z"></path><path fill="#3A7EB9" d="M541.44 94.144L500.416 35.008l-45.696 59.136v29.504h89.024v-29.504zM459.456 288.64h88.96v88.896h-88.96zM459.456 467.456h88.96v88.96h-88.96zM459.456 634.176h88.96v88.896h-88.96zM364.928 788.736h277.76v44.352h-277.76z"></path></svg>
+              </button>
+             
+            </div>
+            
+            
+            
+           
+            
+          </div>
         </div>
       </div>
     </nav>
@@ -512,67 +573,102 @@ button:active {
         </div>
       </div>
       <div class="container-lg">
-        <div th:if="${login != null && !#strings.isEmpty(login.walletAddress)}" class="row" id="nft-container">
+        <div th:if="${session.Login != null && !#strings.isEmpty(session.Login.walletAddress)}" class="row" id="nft-container">
           <!-- NFT cards will be appended here -->
+          <input type="hidden" id="walletkkk" th:value="${session.Login.walletAddress}">
         </div>
-        <div th:if="${login != null && #strings.isEmpty(login.walletAddress)}"  class="row mt-4">
+        <div th:if="${session.Login != null && #strings.isEmpty(session.Login.walletAddress)}"  class="row mt-4">
           <div class="col-12 text-center">
-            <button class="btn btn-primary" onclick="fetchNFTs(event)">Get NFTs</button>
+           <p>chưa kết nối ví</p>
+         
           </div>
         </div>
       </div>
+    <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog  modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">How many coin do you want to lits</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p >You are listing <span class="text-danger" id="nftName"></span> </p>
+        <img class="img-fluid mt-3 mx-auto mb-4" alt="" id="nftImage" src="">
+       <input type="number" class="form-control text-center">
+      </div>
+      <div class="modal-footer">
+     
+        <button type="button" class="btn btn-primary">List To Marker</button>
+      </div>
+    </div>
+  </div>
+</div>
     </article>
   </div>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.16.0/lib/index.iife.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@solana/wallet-adapter-phantom@0.8.0/lib/index.iife.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script type="text/javascript">
-    let wallID = "7CqNMsdsHzxvCtAqYN3KNAk496x6XAzgaUSbhSaRupZB";  // Thay bằng địa chỉ ví của bạn
-    const xKey = "0ZZi5a0Eo89-knJM";
-    const network = "devnet";
+  <<script>
+  
+        document.addEventListener('DOMContentLoaded', (event) => {
+            let wallID = document.getElementById("walletkkk").value;  // Thay bằng địa chỉ ví của bạn
+            const xKey = "0ZZi5a0Eo89-knJM";
+            const network = "devnet";
 
-    const fetchNFTs = async (e) => {
-      e.preventDefault();
-      let nftUrl = `https://api.shyft.to/sol/v1/nft/read_all?network=${network}&address=${wallID}`;
-      try {
-        const response = await axios.get(nftUrl, {
-          headers: {
-            "Content-Type": "application/json",
-            "x-api-key": xKey,
-          },
+            const fetchNFTs = async () => {
+                let nftUrl = `https://api.shyft.to/sol/v1/nft/read_all?network=${network}&address=${wallID}`;
+                try {
+                    const response = await axios.get(nftUrl, {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "x-api-key": xKey,
+                        },
+                    });
+                    const data = response.data;
+
+                    // Xóa các kết quả trước đó
+                    const nftContainer = document.getElementById('nft-container');
+                    nftContainer.innerHTML = '';
+
+                    // Lặp qua các NFT đã fetch và thêm vào container
+                    data.result.forEach(item => {
+                        const nftCard = `
+                            <div class="col-md-3 mb-4">
+                                <div class="card card11">
+                                    <div class="card11-int">
+                                        <span class="card11__span text-danger">Category</span>
+                                        <div >
+                                        <a style="text-decoration: none;">
+                                            <img src="${item.image_uri}" class="img-fluid" style="height: 200px;" alt="${item.name}">
+                                        </a>
+                                            </div>
+                                        <div class="card11-data">
+                                            <p class="card-title title11 text-danger">${item.name}</p>
+                                            <p class="card-text text-danger">${item.description || "No description available."}</p>
+                                            <button onclick="showNftInfo('${item.name}', '${item.description}', '${item.image_uri}')" class="btn btn-primary button11" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button" >List To Market</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+                        nftContainer.innerHTML += nftCard;
+                    });
+
+                } catch (err) {
+                    console.warn(err);
+                }
+            };
+
+            // Gọi hàm fetchNFTs khi trang HTML được mở
+            fetchNFTs();
         });
-        const data = response.data;
-
-        // Xóa các kết quả trước đó
-        const nftContainer = document.getElementById('nft-container');
-        nftContainer.innerHTML = '';
-
-        // Lặp qua các NFT đã fetch và thêm vào container
-        data.result.forEach(item => {
-          const nftCard = `
-            <div class="col-md-4 mb-4">
-              <div class="card card11">
-                <div class="card11-int">
-                  <span class="card11__span text-danger">Category</span>
-                  <div class="img-fluid">
-                    <img src="${item.image_uri}" class="card-img-top img1" alt="${item.name}">
-                  </div>
-                  <div class="card11-data">
-                    <p class="card-title title11 text-danger">${item.name}</p>
-                    <p class="card-text text-danger">${item.description || "No description available."}</p>
-                    <button class="btn btn-primary button11">More info</button>
-                  </div>
-                </div>
-              </div>
-            </div>`;
-          nftContainer.innerHTML += nftCard;
-        });
-
-      } catch (err) {
-        console.warn(err);
-      }
-    };
-  </script>
+        function showNftInfo(name, description, image_uri) {
+            document.getElementById('nftName').innerText = name;
+           
+            document.getElementById('nftImage').src = image_uri;
+            console.log(name);
+        }
+    </script>
 </body>
 </html>

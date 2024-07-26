@@ -18,6 +18,131 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
  <script src="Base58.js" charset="utf-8"></script>
  
+ <script type="text/javascript">
+function showNfts() {
+    var myHeaders = new Headers();
+    myHeaders.append("x-api-key", "hmwMl_TgYEitVNxT");
+
+    var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+    };
+
+    fetch("https://api.shyft.to/sol/v1/marketplace/active_listings?network=devnet&marketplace_address=B4onhZgF5DZnEtpvjaXSz2CwFv5ADkEmPqwpmeLxU1sA", requestOptions)
+        .then(response => response.json())
+        .then(responseData => {
+            if (responseData.success && Array.isArray(responseData.result)) {
+                var nftContainer = document.getElementById("nftContainer");
+                nftContainer.innerHTML = ""; // Clear existing cards
+
+                responseData.result.forEach(nft => {
+                    // Create card element
+                    var card = document.createElement("div");
+                    card.className = "col-md-3 card11 ms-5 mt-4 mb-4";
+
+                    // Create card content
+                    var cardContent = `
+                        <div class="card11-int">
+                            <span class="card11__span">Category</span>
+                            <div style="background-color: #283542;" class="img-fluid text-center">
+                                <a style="text-decoration: none;">
+                                    <img src="${nft.nft.image_uri}" alt="..." 
+                                    class="img-fluid" style="height: 200px;"> 
+                                </a>
+                            </div>
+                            <div class="card11-data">
+                                <a  style="text-decoration: none;" >
+                                    <p class="title11 text-black">${nft.nft.name}</p>
+                                </a>
+                                <p>
+                                    <span class="fw-bold h5 text-primary">${nft.price}</span>
+                                    <img alt="" src="../images/icons8-solana-35.png">
+                                </p>
+                                <form action="#" method="POST">
+                                <button class="button11" onclick="confirmbuy('${nft.nft_address}', '${nft.price}', '${nft.seller_address}')" class="btn btn-primary button11" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button" >Buy Now</button>
+                                </form>
+                                <form action="/nft/detail/${nft.nft_address}" method="GET">
+                                <button class="button11" type="submit">Details</button>
+                            </form>
+                               
+                            </div>
+                        </div>
+                    `;
+
+                    card.innerHTML = cardContent;
+                    nftContainer.appendChild(card); // Append card to container
+                });
+            } else {
+                console.log("Unexpected response format:", responseData);
+            }
+        })
+        .catch(error => console.log('error', error));
+}
+showNfts();
+
+
+
+     let pulickey;
+    
+     const getProvider = async () => {
+       if ("solana" in window) {
+         await window.solana.connect(); // opens wallet to connect to
+
+         const provider = window.solana;
+         if (provider.isPhantom) {
+           let pro = provider.isPhantom
+           console.log("Is Phantom installed?  ", provider.isPhantom);  
+           return provider;
+         }
+       } else {
+
+    	 location.href="https://www.phantom.app/";
+      
+
+
+ refs/remotes/origin/main
+         document.write('Install https://www.phantom.app/');
+         location.href= "https://www.phantom.app/";
+
+
+    	 location.href="https://www.phantom.app/";
+
+
+       }
+     };
+
+
+     const connectToWallet = async () => {
+    	    const { solana } = window;
+    	    if (solana) {
+    	        try {
+    	            const response = await solana.connect();
+    	            const key = response.publicKey.toString();
+    	            console.log('Address:', key);
+
+    	            // Gửi publicKey tới backend
+    	            const requestOptions = {
+    	                method: 'GET',
+    	                headers: { 'Content-Type': 'application/json' },
+    	            };
+    	            await fetch(`/updatewallet/${key}`, requestOptions);
+
+    	            // Điều hướng người dùng đến "/home"
+    	            window.location.href = '/home';
+
+    	        } catch (error) {
+    	            console.error('Lỗi khi kết nối với ví Solana:', error);
+    	        }
+    	    }
+    	};
+
+    	function confirmbuy(adnft,price,seller)
+    	{
+    		document.getElementById('price').innerText = price;
+    	}
+   
+  </script>
 </head>
 <style>
   .bgvip {
@@ -499,7 +624,7 @@ button:active {
               <a class="nav-link fw-bold text-white" href="#!gioithieu">CONTACT US</a>
             </li>
             <li class="nav-item ms-2">
-              <a class="nav-link fw-bold text-white" href="#!gioithieu">My NFTs</a>
+              <a class="nav-link fw-bold text-white" href="/user/mynft">My NFTs</a>
             </li>
           </ul>
 	
@@ -626,9 +751,9 @@ button:active {
           <div class="row">
 
             <div class="card mt-5 ms-3 " th:each="top2nft : ${listtop2}">
-              <img alt="" class="img-fluid mx-auto w-75" th:src="@{'/images/' +${top2nft.imageUrl}}"> 
+              <img alt="" class="img-fluid mx-auto w-75" style="height: 200px;" th:src="${top2nft.imageUrl}"> 
              <p class="card-title" th:text="${top2nft.name}"></p>
-             <p class="card-para mt-3">[[${top2nft.price}]]<img class="img" src="../images/icons8-solana-35.png" alt=""> </p>
+             <p class="card-para mt-3">[[${top2nft.price}]]<img class="img"  src="../images/icons8-solana-35.png" alt=""> </p>
             </div>
   
          
@@ -675,40 +800,55 @@ button:active {
 
       </div>
 
-      <div class="row mt-4">
-
-        <div class="col-md-3 card11 ms-5 mt-4 mb-4" th:each="nft : ${listnft}" >
-
-          <div class="card11-int">
-            <span class="card11__span">Category</span>
-            <div style="background-color: #283542;" class="img-fluid">
-             <a style="text-decoration: none;" th:href="@{'/nft/detail/' + ${nft.nftId}}">
-                <img th:src="@{'/images/' + ${nft.imageUrl}}" alt="..."> 
-                 </a>
-                
-                
-                </div>
-            <div class="card11-data">
-                <a style="text-decoration: none;" th:href="@{'/nft/detail/' + ${nft.nftId}}">
-                <p class="title11 text-black" th:text="${nft.name}"></p>
-                 </a>
-              <p>  <span class="fw-bold h5 text-primary">[[${nft.price}]] </span>  <img alt="" src="../images/icons8-solana-35.png"></p>
-              <button class="button11">Buy Now</button>
-            </div>
-        </div>
-       
-     
-
-        </div>
+      <div id="nftContainer" class="row mt-4">
 
        
 
+   
         
 
            
 
       </div>
-
+	
+	
+		   <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog  modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Do you really want to buy this NFT</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+       <div th:if="${session.Login != null && #strings.isEmpty(session.Login.walletAddress)}">
+       <p >You have to Connect Wallet  </p>
+     
+      
+        <button type="button" class="btn btn-primary">Connect Wallet</button>
+       </div>
+       <div th:if="${session.Login != null && !#strings.isEmpty(session.Login.walletAddress)}">
+        <p >NFT'S PRICE IS <span class="text-danger" id="price"></span> </p>
+     
+       <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+        <button type="button" class="btn btn-primary">Buy Now</button>
+       </div>
+        <div th:if="${session.Login == null}">
+        <p >You have to login  </p>
+     
+      
+        <button type="button" class="btn btn-primary">Login</button>
+       </div>
+       
+      </div>
+    
+    </div>
+  </div>
+</div>
+	
+	
+	
+	
       </div>
       
 
@@ -770,65 +910,8 @@ button:active {
   </div>
 
 
+                              
 
-<script type="text/javascript">
-     let pulickey;
-    
-     const getProvider = async () => {
-       if ("solana" in window) {
-         await window.solana.connect(); // opens wallet to connect to
-
-         const provider = window.solana;
-         if (provider.isPhantom) {
-           let pro = provider.isPhantom
-           console.log("Is Phantom installed?  ", provider.isPhantom);  
-           return provider;
-         }
-       } else {
-
-    	 location.href="https://www.phantom.app/";
-      
-
-
- refs/remotes/origin/main
-         document.write('Install https://www.phantom.app/');
-         location.href= "https://www.phantom.app/";
-
-
-    	 location.href="https://www.phantom.app/";
-
-
-       }
-     };
-
-
-     const connectToWallet = async () => {
-    	    const { solana } = window;
-    	    if (solana) {
-    	        try {
-    	            const response = await solana.connect();
-    	            const key = response.publicKey.toString();
-    	            console.log('Address:', key);
-
-    	            // Gửi publicKey tới backend
-    	            const requestOptions = {
-    	                method: 'GET',
-    	                headers: { 'Content-Type': 'application/json' },
-    	            };
-    	            await fetch(`/updatewallet/${key}`, requestOptions);
-
-    	            // Điều hướng người dùng đến "/home"
-    	            window.location.href = '/home';
-
-    	        } catch (error) {
-    	            console.error('Lỗi khi kết nối với ví Solana:', error);
-    	        }
-    	    }
-    	};
-
-     
-   
-  </script>
 </body>
 
 </html>

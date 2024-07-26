@@ -453,7 +453,7 @@ input:valid {
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active fw-bold text-white" aria-current="page" href="#!trangchu">MARKET PLACE</a>
+              <a class="nav-link active fw-bold text-white" aria-current="page" href="/home">MARKET PLACE</a>
             </li>
             <li class="nav-item ms-2">
               <a class="nav-link fw-bold text-white" href="/user/userapp">MY APP</a>
@@ -462,12 +462,12 @@ input:valid {
               <a class="nav-link fw-bold text-white" href="#!gioithieu">CONTACT US</a>
             </li>
             <li class="nav-item ms-2">
-              <a class="nav-link fw-bold text-white" href="#!gioithieu">My NFTs</a>
+              <a class="nav-link fw-bold text-white" href="/user/mynft">My NFTs</a>
             </li>
           </ul>
 	
           <form method="get" action=""  class="d-flex">
-            <div  th:if="${ #strings.isEmpty(login)}"  id="pulsa" class="pulsa me-lg-5">
+            <div  th:if="${ #strings.isEmpty(session.Login)}"  id="pulsa" class="pulsa me-lg-5">
               <button formaction="/login" id="cta" class="cta">
                 Login <div class="star a"></div>
               <div class="star b"></div>
@@ -482,7 +482,7 @@ input:valid {
             </div>
             
             
-             <div th:if="${not #strings.isEmpty(login)}" id="pulsa" class="pulsa me-lg-5">
+             <div th:if="${not #strings.isEmpty(session.Login)}" id="pulsa" class="pulsa me-lg-5">
               <button formaction="/logout" id="cta" class="cta">
                 Log Out <div class="star a"></div>
               <div class="star b"></div>
@@ -498,7 +498,7 @@ input:valid {
             
             
             
-             <div th:if="${login != null && login.role.contains('Admin')}" id="pulsa" class="pulsa me-lg-5">
+             <div th:if="${session.Login != null && session.Login.role.contains('Admin')}" id="pulsa" class="pulsa me-lg-5">
   <button formaction="/admin" id="cta" class="cta">
     App
     <div class="star a"></div>
@@ -523,7 +523,7 @@ input:valid {
             
           </form>
           <div  class="d-flex">
-          <div th:if="${login != null && #strings.isEmpty(login.walletAddress)}"  id="pulsa" class="pulsa me-lg-5">
+          <div th:if="${session.Login != null && #strings.isEmpty(session.Login.walletAddress)}"  id="pulsa" class="pulsa me-lg-5">
               <button onclick="connectToWallet()" id="cta" class="cta">
                 Connect <div class="star a"></div>
               <div class="star b"></div>

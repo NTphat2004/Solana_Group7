@@ -42,13 +42,13 @@ public class favoriteNFTcontroller {
 	}
 	
 	@RequestMapping("/user/favoritenft/{nftid}")
-	public String requestMethodName(@PathVariable("nftid") Integer idnft) {
+	public String requestMethodName(@PathVariable("nftid") String idnft) {
 		
 		Users userne = (Users) session.getAttribute("Login");
 		
 	
 		Favorites f = new Favorites();
-		NFTs nftfind = daonft.findbynftId(idnft);
+		NFTs nftfind = daonft.findbyadress(idnft);
 		f.setUser(userne);
 		f.setNft(nftfind);
 		 dao.save(f); 

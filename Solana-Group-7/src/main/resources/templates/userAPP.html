@@ -363,7 +363,7 @@ font-size: 20px;
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active fw-bold text-white" aria-current="page" href="#!trangchu">MARKET PLACE</a>
+              <a class="nav-link active fw-bold text-white" aria-current="page" href="/home">MARKET PLACE</a>
             </li>
             <li class="nav-item ms-2">
               <a class="nav-link fw-bold text-white" href="/user/userapp">MY APP</a>
@@ -372,11 +372,11 @@ font-size: 20px;
               <a class="nav-link fw-bold text-white" href="#!gioithieu">CONTACT US</a>
             </li>
             <li class="nav-item ms-2">
-              <a class="nav-link fw-bold text-white" href="#!gioithieu">My NFTs</a>
+              <a class="nav-link fw-bold text-white" href="/user/mynft">My NFTs</a>
             </li>
           </ul>
 	
-         <form method="get" action=""  class="d-flex">
+          <form method="get" action=""  class="d-flex">
             <div  th:if="${ #strings.isEmpty(session.Login)}"  id="pulsa" class="pulsa me-lg-5">
               <button formaction="/login" id="cta" class="cta">
                 Login <div class="star a"></div>
@@ -509,12 +509,12 @@ font-size: 20px;
 
                 
                     <div class="card5">
-                      <div class="card-img">  <button class="blue-btn button">MY NFTs</button> </div>
+                      <div class="card-img">  <button class="blue-btn button">CREATE NFTs</button> </div>
                         <div class="card-info">
                           <div class="card-text">
-                           <p class="text-title">This is MY NFTs</p>
+                           <p class="text-title">This is CREATE NFTs</p>
                         
-                         <a style="text-decoration: none;" href="/user/mynft"><p class="text-subtitle">Click to Start</p></a>
+                         <a style="text-decoration: none;" href="/user/createnft"><p class="text-subtitle">Click to Start</p></a>
                            
                           </div>
                           <div class="card-icon">
@@ -539,10 +539,11 @@ font-size: 20px;
   
                   
                   <div class="card5">
-                    <div class="card-img"><button class="red-btn button">MY LISTING</button> </div>
+                    <div class="card-img"><button class="red-btn button">LISTING NFT</button> </div>
                       <div class="card-info">
                         <div class="card-text">
-                          <p class="text-title">This is MY LISTING</p>
+                          <p class="text-title">This is  LISTING NFT</p>
+                             <a style="text-decoration: none;" href="/user/listtomarket"><p class="text-subtitle">Click to Start</p></a>
                         
                         </div>
                         <div class="card-icon">
@@ -646,7 +647,7 @@ font-size: 20px;
                         <div class="card-info">
                           <div class="card-text">
                             <p class="text-title">This is MY NFTs</p>
-                           
+                           	  <a style="text-decoration: none;" href="/user/mynft"><p class="text-subtitle">Click to Start</p></a>
                           </div>
                           <div class="card-icon">
                             <svg viewBox="0 0 28 25" class="icon">

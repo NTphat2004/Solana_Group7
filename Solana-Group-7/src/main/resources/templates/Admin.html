@@ -366,16 +366,16 @@ font-size: 20px;
               <a class="nav-link active fw-bold text-white" aria-current="page" href="/home">MARKET PLACE</a>
             </li>
             <li class="nav-item ms-2">
-              <a class="nav-link fw-bold text-white" href="#!baithi">INTRODUCE</a>
+              <a class="nav-link fw-bold text-white" href="/user/userapp">MY APP</a>
             </li>
             <li class="nav-item ms-2">
               <a class="nav-link fw-bold text-white" href="#!gioithieu">CONTACT US</a>
             </li>
             <li class="nav-item ms-2">
-              <a class="nav-link fw-bold text-white" href="#!gioithieu">My NFTs</a>
+              <a class="nav-link fw-bold text-white" href="/user/mynft">My NFTs</a>
             </li>
           </ul>
-
+	
           <form method="get" action=""  class="d-flex">
             <div  th:if="${ #strings.isEmpty(session.Login)}"  id="pulsa" class="pulsa me-lg-5">
               <button formaction="/login" id="cta" class="cta">

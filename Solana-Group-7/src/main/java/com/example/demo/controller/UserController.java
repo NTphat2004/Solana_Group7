@@ -58,5 +58,10 @@ public class UserController {
 		
 		return "myNFT";
 	}
-
+	
+	@GetMapping("/user/listtomarket")
+	public String getMethodName1111111(Model model) {
+		
+		return "ListToMarket";
+	}
 }

@@ -36,33 +36,44 @@ public class NFTController {
 	HttpSession session;
 	
 	@GetMapping("/nft/detail/{value}")
-	public String getMethodName(Model model,@PathVariable("value")Integer value) {
+	public String getMethodName(Model model,@PathVariable("value")String value) {
 		System.out.println(value);
-		Optional<NFTs> findnft = nftdao.findById(value);
-		if (findnft.isPresent()) {
-	        model.addAttribute("nft", findnft.get());
+		NFTs findnft = nftdao.findbyadress(value);
+		if (findnft!=null) {
+	        model.addAttribute("nft", findnft);
 	    } 
-	List<Comments> listcomment = commentdao.findCommentsByNFTs(value);
+	List<Comments> listcomment = commentdao.findCommentsByNFTsnftAddress(value);
 	model.addAttribute("listcm", listcomment);
 	Integer countcomment = commentdao.countByIdNft(value);
 	model.addAttribute("countcomment", countcomment);
 		return "NFTDetail";
 	}
 	
+//	@GetMapping("/nft/detail/{value}")
+//	public String getMethodName(Model model,@PathVariable("value")Integer value) {
+//		System.out.println(value);
+//		Optional<NFTs> findnft = nftdao.findById(value);
+//		if (findnft.isPresent()) {
+//	        model.addAttribute("nft", findnft.get());
+//	    } 
+//	List<Comments> listcomment = commentdao.findCommentsByNFTs(value);
+//	model.addAttribute("listcm", listcomment);
+//	Integer countcomment = commentdao.countByIdNft(value);
+//	model.addAttribute("countcomment", countcomment);
+//		return "NFTDetail";
+//	}
+	
 	@GetMapping("nft/detail/comment/{value}")
-	public String MethodName11(Model model,@PathVariable("value")Integer value,@RequestParam("content") String content) {
+	public String MethodName11(Model model,@PathVariable("value")String value,@RequestParam("content") String content) {
 		
-		Optional<NFTs> findnft = nftdao.findById(value);
-		
-	    model.addAttribute("nft", findnft.get());
-	    
-	    NFTs nft  = findnft.get();
+		NFTs findnft = nftdao.findbyadress(value);
+		System.out.println(findnft.getNftId()+"nft");
 	    Users user = (Users) session.getAttribute("Login");
 		Date now = new Date();
 		Comments comment = new Comments();
 		comment.setCommentContent(content);
 		comment.setCommentDate(now);
-		comment.setNft(nft);
+		comment.setNft(findnft);
 		comment.setUser(user);
 		commentdao.save(comment);
 		return "redirect:/nft/detail/"+value;

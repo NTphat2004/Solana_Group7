@@ -13,6 +13,10 @@ public interface CommentRepository extends JpaRepository<Comments, Integer> {
 	@Query("SELECT cm FROM Comments cm where cm.nft.nftId  = ?1")
 	List<Comments> findCommentsByNFTs(Integer nftid);
 	
-	@Query("SELECT COUNT(n) FROM Comments n WHERE n.nft.nftId = :id")
-    Integer countByIdNft(Integer id);
+	@Query("SELECT cm FROM Comments cm where cm.nft.nftAddress  = ?1")
+	List<Comments> findCommentsByNFTsnftAddress(String nftAddress);
+
+	
+	@Query("SELECT COUNT(n) FROM Comments n WHERE n.nft.nftAddress = :id")
+    Integer countByIdNft(String id);
 }

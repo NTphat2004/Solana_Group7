@@ -506,38 +506,36 @@ input:-webkit-autofill:hover,
 <body >
 
     <div class="container-fluid bgvip p-0 " >
-        <nav class="navbar navbar-expand-lg navbar-sm rounded-4  bg-secondary bg-gradient bg-opacity-10 sticky-top"
-            style="background-color: transparent;">
-            <div class="container-fluid justify-content-between">
-                <a class="navbar-brand d-flex align-items-center" href="layout.html">
-                    <img src="images/icons8-axie-infinity-41.png" alt="">
-                    <span class="ms-2 text-white">Market NFTs</span>
-</a>
+        <nav class="navbar navbar-expand-lg navbar-sm   bg-secondary bg-gradient bg-opacity-10 sticky-top"
+      style="background-color: transparent;">
+      <div class="container-fluid justify-content-between">
+        <a class="navbar-brand d-flex align-items-center" href="layout.html">
+          <img src="../images/icons8-axie-infinity-41.png" alt="">
+          <span class="ms-2 text-white">Market NFTs</span>
+        </a>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active fw-bold text-white" aria-current="page" href="#!trangchu">MARKET
-                                PLACE</a>
-                        </li>
-                        <li class="nav-item ms-2">
-                            <a class="nav-link fw-bold text-white" href="#!baithi">INTRODUCE</a>
-                        </li>
-                        <li class="nav-item ms-2">
-                            <a class="nav-link fw-bold text-white" href="#!gioithieu">CONTACT US</a>
-                        </li>
-                        <li class="nav-item ms-2">
-                            <a class="nav-link fw-bold text-white" href="#!gioithieu">My NFTs</a>
-                        </li>
-                    </ul>
-
-                    <form method="get" action=""  class="d-flex">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active fw-bold text-white" aria-current="page" href="/home">MARKET PLACE</a>
+            </li>
+            <li class="nav-item ms-2">
+              <a class="nav-link fw-bold text-white" href="/user/userapp">MY APP</a>
+            </li>
+            <li class="nav-item ms-2">
+              <a class="nav-link fw-bold text-white" href="#!gioithieu">CONTACT US</a>
+            </li>
+            <li class="nav-item ms-2">
+              <a class="nav-link fw-bold text-white" href="/user/mynft">My NFTs</a>
+            </li>
+          </ul>
+	
+          <form method="get" action=""  class="d-flex">
             <div  th:if="${ #strings.isEmpty(session.Login)}"  id="pulsa" class="pulsa me-lg-5">
               <button formaction="/login" id="cta" class="cta">
                 Login <div class="star a"></div>
@@ -613,14 +611,47 @@ input:-webkit-autofill:hover,
            
             
           </div>
-                </div>
-            </div>
-        </nav>
+        </div>
+      </div>
+    </nav>
        <article>
+        <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog  modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Do you really want to buy this NFT</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+       <div th:if="${session.Login != null && #strings.isEmpty(session.Login.walletAddress)}">
+       <p >You have to Connect Wallet  </p>
+     
+      
+        <button type="button" class="btn btn-primary">Connect Wallet</button>
+       </div>
+       <div th:if="${session.Login != null && !#strings.isEmpty(session.Login.walletAddress)}">
+        <p >NFT'S PRICE IS <span class="text-danger" id="price"></span> </p>
+     
+       <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+        <button type="button" class="btn btn-primary">Buy Now</button>
+       </div>
+        <div th:if="${session.Login == null}">
+        <p >You have to login  </p>
+     
+      
+        <button type="button" class="btn btn-primary">Login</button>
+       </div>
+       
+      </div>
+    
+    </div>
+  </div>
+</div>
         <div class="row mt-3 p-5 clearfix">
             <div class="col-md-7 ">
                 <div class="img-fluid bg-gradient rounded text-center ">
-                    <img class="p-2 rounded-4 img-fluid" th:src="@{'/images/' + ${nft.imageUrl}}">
+                    <img class="p-2 rounded-4 img-fluid" th:src="@{${nft.imageUrl}}">
                 </div>
                 <div class="row mt-3">
                     <div class="col-md-12">
@@ -653,7 +684,7 @@ input:-webkit-autofill:hover,
              <div th:if="${not #strings.isEmpty(session.Login)}" >
               
               <h6 class="fw-bold mt-5">Your Comment</h6>
-					<form method="get" th:action="@{/nft/detail/comment/{nftId}(nftId=${nft.nftId})}" >
+					<form method="get" th:action="@{/nft/detail/comment/{nftId}(nftId=${nft.nftAddress})}" >
 					<textarea class="form-control" name="content"  placeholder="Your text"></textarea>
                         <button type="submit" class="btn btn-primary mt-2 text-end text-right">Send</button> 
                         
@@ -677,8 +708,8 @@ input:-webkit-autofill:hover,
                             <p class="fs-3 fw-bold pt-2">[[${nft.price}]] <img class="img" src="/images/icons8-solana-35.png" alt=""></p>
                             <p class="card-text" th:text="${nft.description}"></p>
                             <form method="get" class="d-flex justify-content-between">
-                                <button class="btn w-50 me-1 btn-primary" th:formaction="@{/user/favoritenft/{idnft}(idnft=${nft.nftId})}" style="font-size: 30px; width: 100%; height: 70px; ">Add <span><i class="bi-cart"></i></span></button>
-                                <button class="btn w-50 btn-danger	" th:formaction="@{/user/buy/{idnft}(idnft=${nft.nftId})}" style="font-size: 30px; width: 100%; height: 70px; ">BUY</button>
+                                <button class="btn w-50 me-1 btn-primary" th:formaction="@{/user/favoritenft/{idnft}(idnft=${nft.nftAddress})}" style="font-size: 30px; width: 100%; height: 70px; ">Add <span><i class="bi-cart"></i></span></button>
+                                <button  th:attr="onclick='confirmbuy(\'' + ${nft.nftAddress} + '\', \'' + ${nft.price} + '\', \'' + ${nft.owner} + '\')'"   class="btn btn-success button11 w-50" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button" style="font-size: 30px; width: 100%; height: 70px; ">BUY</button>
                             </form>
                         </div>
                     </div>
@@ -795,5 +826,9 @@ display: true,
 
     });
 
-
+    function confirmbuy(nftAddress, price, owner)
+	{
+		document.getElementById('price').innerText = price;
+		
+	}
 </script>

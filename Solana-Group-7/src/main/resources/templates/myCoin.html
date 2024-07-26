@@ -433,7 +433,7 @@ input:valid {
 </style>
 <body>
     <div class="container-fluid bgvip p-0">
-       <nav class="navbar navbar-expand-lg navbar-sm   bg-secondary bg-gradient bg-opacity-10 sticky-top"
+        <nav class="navbar navbar-expand-lg navbar-sm   bg-secondary bg-gradient bg-opacity-10 sticky-top"
       style="background-color: transparent;">
       <div class="container-fluid justify-content-between">
         <a class="navbar-brand d-flex align-items-center" href="layout.html">
@@ -449,7 +449,7 @@ input:valid {
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active fw-bold text-white" aria-current="page" href="#!trangchu">MARKET PLACE</a>
+              <a class="nav-link active fw-bold text-white" aria-current="page" href="/home">MARKET PLACE</a>
             </li>
             <li class="nav-item ms-2">
               <a class="nav-link fw-bold text-white" href="/user/userapp">MY APP</a>
@@ -458,7 +458,7 @@ input:valid {
               <a class="nav-link fw-bold text-white" href="#!gioithieu">CONTACT US</a>
             </li>
             <li class="nav-item ms-2">
-              <a class="nav-link fw-bold text-white" href="#!gioithieu">My NFTs</a>
+              <a class="nav-link fw-bold text-white" href="/user/mynft">My NFTs</a>
             </li>
           </ul>
 	
@@ -587,7 +587,8 @@ input:valid {
     </div>
     <script>
         var walletAddress = document.getElementById("walletne").value // Thay thế bằng địa chỉ ví của bạn
-		console.log(walletAddress)
+		
+        console.log(walletAddress)
         // Gọi API của Solana Devnet
         async function getSolanaBalance() {
             try {

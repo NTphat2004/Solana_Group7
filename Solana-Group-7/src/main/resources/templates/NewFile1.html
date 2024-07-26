@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NFT Marketplace</title>
+  <link rel="icon" type="image/x-icon" href="/images/icons8-nft-38.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <article>
+    <div class="row">
+      <div class="py-4 text-center">
+        <h1>List All Your NFTs</h1>
+        <p>This is a sample project which will list all your NFTs associated with your wallet</p>
+      </div>
+    </div>
+    <input type="hidden" id="walletkkk" th:value="${session.Login.walletAddress}">
+    <div class="container-lg">
+      <div th:if="${session.Login != null && !#strings.isEmpty(session.Login.walletAddress)}" class="row" id="nft-container">
+        <!-- NFT cards will be appended here -->
+        
+      </div>
+      <div th:if="${session.Login != null && #strings.isEmpty(session.Login.walletAddress)}" class="row mt-4">
+        <div class="col-12 text-center">
+          <p>chưa kết nối ví</p>
+        </div>
+      </div>
+    </div>
+  </article>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.16.0/lib/index.iife.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@solana/wallet-adapter-phantom@0.8.0/lib/index.iife.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+      let wallID = document.getElementById("walletkkk").value;  // Thay bằng địa chỉ ví của bạn
+      const xKey = "0ZZi5a0Eo89-knJM";
+      const network = "devnet";
+
+      const fetchNFTs = async () => {
+        let nftUrl = `https://api.shyft.to/sol/v1/nft/read_all?network=${network}&address=${wallID}`;
+        try {
+          const response = await axios.get(nftUrl, {
+            headers: {
+              "Content-Type": "application/json",
+              "x-api-key": xKey,
+            },
+          });
+          const data = response.data;
+
+          // Xóa các kết quả trước đó
+          const nftContainer = document.getElementById('nft-container');
+          nftContainer.innerHTML = '';
+
+          // Lặp qua các NFT đã fetch và thêm vào container
+          data.result.forEach(item => {
+            const nftCard = `
+              <div class="col-md-4 mb-4">
+                <div class="card card11">
+                  <div class="card11-int">
+                    <span class="card11__span text-danger">Category</span>
+                    <div class="img-fluid">
+                      <img src="${item.image_uri}" class="card-img-top img1" alt="${item.name}">
+                    </div>
+                    <div class="card11-data">
+                      <p class="card-title title11 text-danger">${item.name}</p>
+                      <p class="card-text text-danger">${item.description || "No description available."}</p>
+                      <button class="btn btn-primary button11" onclick="list_gasless('${item.mint}')">Buy</button>
+                    </div>
+                  </div>
+                </div>
+              </div>`;
+            nftContainer.innerHTML += nftCard;
+          });
+
+        } catch (err) {
+          console.warn(err);
+        }
+      };
+
+      // Gọi hàm fetchNFTs khi trang HTML được mở
+      fetchNFTs();
+    });
+
+    function list_gasless(nftAddress) {
+      var myHeaders = new Headers();
+      let walletInput = document.getElementById("walletkkk").value;
+      console.log(walletInput);
+      console.log(nftAddress);
+      myHeaders.append("x-api-key", "hmwMl_TgYEitVNxT");
+      myHeaders.append("Content-Type", "application/json");
+
+      var raw = JSON.stringify({
+        "network": "devnet",
+        "marketplace_address": "B4onhZgF5DZnEtpvjaXSz2CwFv5ADkEmPqwpmeLxU1sA",
+        "nft_address": nftAddress,
+        "price": 0.3,
+        "seller_wallet": walletInput,
+        "service_charge": {
+          "receiver": walletInput,
+          "amount": 0.01
+        }
+      });
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      };
+
+      fetch("https://api.shyft.to/sol/v1/marketplace/list", requestOptions)
+        .then(response => response.text())
+        .then(result => console.table(result))
+        .catch(error => console.log('error', error));
+    }
+  </script>
+</body>
+
+</html>

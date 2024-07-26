@@ -14,4 +14,7 @@ public interface NftRepository extends JpaRepository<NFTs, Integer> {
 	   
 	   @Query("SELECT n FROM NFTs  n where n.nftId = ?1")
 	   NFTs findbynftId(Integer id);
+	   
+	   @Query("SELECT n FROM NFTs  n where n.nftAddress = ?1")
+	   NFTs findbyadress(String id);
 }
