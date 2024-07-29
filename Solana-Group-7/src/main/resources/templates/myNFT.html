@@ -595,11 +595,12 @@ button:active {
       <div class="modal-body">
         <p >You are listing <span class="text-danger" id="nftName"></span> </p>
         <img class="img-fluid mt-3 mx-auto mb-4" alt="" id="nftImage" src="">
-       <input type="number" class="form-control text-center">
+       <input type="number" id="pricenft" class="form-control text-center">
+       <input type="hidden" id="nftAddress" class="form-control text-center">
       </div>
       <div class="modal-footer">
      
-        <button type="button" class="btn btn-primary">List To Marker</button>
+        <button type="button" id="list-nft" class="btn btn-primary">List To Marker</button>
       </div>
     </div>
   </div>
@@ -610,10 +611,11 @@ button:active {
   <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.16.0/lib/index.iife.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@solana/wallet-adapter-phantom@0.8.0/lib/index.iife.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+   <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
   <<script>
-  
+  let wallID = document.getElementById("walletkkk").value;
         document.addEventListener('DOMContentLoaded', (event) => {
-            let wallID = document.getElementById("walletkkk").value;  // Thay bằng địa chỉ ví của bạn
+             // Thay bằng địa chỉ ví của bạn
             const xKey = "0ZZi5a0Eo89-knJM";
             const network = "devnet";
 
@@ -627,7 +629,7 @@ button:active {
                         },
                     });
                     const data = response.data;
-
+                  
                     // Xóa các kết quả trước đó
                     const nftContainer = document.getElementById('nft-container');
                     nftContainer.innerHTML = '';
@@ -647,7 +649,7 @@ button:active {
                                         <div class="card11-data">
                                             <p class="card-title title11 text-danger">${item.name}</p>
                                             <p class="card-text text-danger">${item.description || "No description available."}</p>
-                                            <button onclick="showNftInfo('${item.name}', '${item.description}', '${item.image_uri}')" class="btn btn-primary button11" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button" >List To Market</button>
+                                            <button onclick="showNftInfo('${item.name}', '${item.mint}', '${item.image_uri}')" class="btn btn-primary button11" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button" >List To Market</button>
                                         </div>
                                     </div>
                                 </div>
@@ -663,12 +665,87 @@ button:active {
             // Gọi hàm fetchNFTs khi trang HTML được mở
             fetchNFTs();
         });
-        function showNftInfo(name, description, image_uri) {
+        function showNftInfo(name, nftAddress, image_uri) {
             document.getElementById('nftName').innerText = name;
            
             document.getElementById('nftImage').src = image_uri;
-            console.log(name);
+            document.getElementById('nftAddress').value = nftAddress;
         }
+        
+     // Giả sử biến này chứa địa chỉ ví
+        let walletAddress = document.getElementById("walletkkk").value; // Thay đổi giá trị này theo địa chỉ ví của bạn
+
+        document.getElementById('list-nft').addEventListener('click', async () => {
+            try {
+                var pricenft = parseFloat(document.getElementById('pricenft').value); // Đảm bảo giá là số
+                var nftaddress = document.getElementById('nftAddress').value;
+                const wallID = walletAddress; // Địa chỉ ví từ biến
+				console.log(pricenft);
+				console.log(nftaddress);
+                if (isNaN(pricenft) || !nftaddress || !wallID) {
+                    console.error('Dữ liệu đầu vào không hợp lệ.');
+                    return;
+                }
+
+                const myHeaders = new Headers();
+                myHeaders.append("x-api-key", "hmwMl_TgYEitVNxT");
+                myHeaders.append("Content-Type", "application/json");
+
+                const raw = JSON.stringify({
+                    "network": "devnet",
+                    "marketplace_address": "B4onhZgF5DZnEtpvjaXSz2CwFv5ADkEmPqwpmeLxU1sA",
+                    "nft_address": nftaddress,
+                    "price": pricenft,
+                    "seller_wallet": wallID,
+                    "service_charge": {
+                        "receiver": wallID,
+                        "amount": 0.01
+                    }
+                });
+
+                const requestOptions = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: raw,
+                    redirect: 'follow'
+                };
+
+                const response = await fetch("https://api.shyft.to/sol/v1/marketplace/list", requestOptions);
+                const result = await response.json();
+                console.log('Phản hồi API:', result);
+
+                if (!response.ok) {
+                    throw new Error(result.message || 'Lỗi không xác định từ API');
+                }
+
+                const encodedTransaction = result.result.encoded_transaction;
+
+                if (encodedTransaction) {
+                    const transactionBytes = Uint8Array.from(atob(encodedTransaction), c => c.charCodeAt(0));
+                    console.log('Transaction bytes:', transactionBytes);
+
+                    const transaction = solanaWeb3.Transaction.from(transactionBytes);
+                    console.log('Transaction object:', transaction);
+
+                    const signedTransaction = await window.solana.signTransaction(transaction);
+                    console.log('Signed transaction:', signedTransaction);
+
+                    const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('devnet'), 'confirmed');
+                    const txid = await connection.sendRawTransaction(signedTransaction.serialize());
+                    console.log('Transaction sent with ID:', txid);
+                } else {
+                    console.error('Không có encoded transaction trả về từ API');
+                }
+            } catch (error) {
+                console.log('Lỗi:', error);
+            }
+        });
+
+
+
+
+        
+        
     </script>
 </body>
 </html>

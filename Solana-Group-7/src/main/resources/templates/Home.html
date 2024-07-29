@@ -17,132 +17,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
  <script src="Base58.js" charset="utf-8"></script>
- 
- <script type="text/javascript">
-function showNfts() {
-    var myHeaders = new Headers();
-    myHeaders.append("x-api-key", "hmwMl_TgYEitVNxT");
-
-    var requestOptions = {
-        method: 'GET',
-        headers: myHeaders,
-        redirect: 'follow'
-    };
-
-    fetch("https://api.shyft.to/sol/v1/marketplace/active_listings?network=devnet&marketplace_address=B4onhZgF5DZnEtpvjaXSz2CwFv5ADkEmPqwpmeLxU1sA", requestOptions)
-        .then(response => response.json())
-        .then(responseData => {
-            if (responseData.success && Array.isArray(responseData.result)) {
-                var nftContainer = document.getElementById("nftContainer");
-                nftContainer.innerHTML = ""; // Clear existing cards
-
-                responseData.result.forEach(nft => {
-                    // Create card element
-                    var card = document.createElement("div");
-                    card.className = "col-md-3 card11 ms-5 mt-4 mb-4";
-
-                    // Create card content
-                    var cardContent = `
-                        <div class="card11-int">
-                            <span class="card11__span">Category</span>
-                            <div style="background-color: #283542;" class="img-fluid text-center">
-                                <a style="text-decoration: none;">
-                                    <img src="${nft.nft.image_uri}" alt="..." 
-                                    class="img-fluid" style="height: 200px;"> 
-                                </a>
-                            </div>
-                            <div class="card11-data">
-                                <a  style="text-decoration: none;" >
-                                    <p class="title11 text-black">${nft.nft.name}</p>
-                                </a>
-                                <p>
-                                    <span class="fw-bold h5 text-primary">${nft.price}</span>
-                                    <img alt="" src="../images/icons8-solana-35.png">
-                                </p>
-                                <form action="#" method="POST">
-                                <button class="button11" onclick="confirmbuy('${nft.nft_address}', '${nft.price}', '${nft.seller_address}')" class="btn btn-primary button11" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button" >Buy Now</button>
-                                </form>
-                                <form action="/nft/detail/${nft.nft_address}" method="GET">
-                                <button class="button11" type="submit">Details</button>
-                            </form>
-                               
-                            </div>
-                        </div>
-                    `;
-
-                    card.innerHTML = cardContent;
-                    nftContainer.appendChild(card); // Append card to container
-                });
-            } else {
-                console.log("Unexpected response format:", responseData);
-            }
-        })
-        .catch(error => console.log('error', error));
-}
-showNfts();
-
-
-
-     let pulickey;
-    
-     const getProvider = async () => {
-       if ("solana" in window) {
-         await window.solana.connect(); // opens wallet to connect to
-
-         const provider = window.solana;
-         if (provider.isPhantom) {
-           let pro = provider.isPhantom
-           console.log("Is Phantom installed?  ", provider.isPhantom);  
-           return provider;
-         }
-       } else {
-
-    	 location.href="https://www.phantom.app/";
-      
-
-
- refs/remotes/origin/main
-         document.write('Install https://www.phantom.app/');
-         location.href= "https://www.phantom.app/";
-
-
-    	 location.href="https://www.phantom.app/";
-
-
-       }
-     };
-
-
-     const connectToWallet = async () => {
-    	    const { solana } = window;
-    	    if (solana) {
-    	        try {
-    	            const response = await solana.connect();
-    	            const key = response.publicKey.toString();
-    	            console.log('Address:', key);
-
-    	            // Gửi publicKey tới backend
-    	            const requestOptions = {
-    	                method: 'GET',
-    	                headers: { 'Content-Type': 'application/json' },
-    	            };
-    	            await fetch(`/updatewallet/${key}`, requestOptions);
-
-    	            // Điều hướng người dùng đến "/home"
-    	            window.location.href = '/home';
-
-    	        } catch (error) {
-    	            console.error('Lỗi khi kết nối với ví Solana:', error);
-    	        }
-    	    }
-    	};
-
-    	function confirmbuy(adnft,price,seller)
-    	{
-    		document.getElementById('price').innerText = price;
-    	}
-   
-  </script>
+  
 </head>
 <style>
   .bgvip {
@@ -829,9 +704,11 @@ button:active {
        </div>
        <div th:if="${session.Login != null && !#strings.isEmpty(session.Login.walletAddress)}">
         <p >NFT'S PRICE IS <span class="text-danger" id="price"></span> </p>
-     
+     	<input id="selleraddress" type="hidden">
+     	<input id="nftaddress" type="hidden">
+     	<input th:value="${session.Login.walletAddress}" id="buyeraddress" th:type="hidden" >
        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-        <button type="button" class="btn btn-primary">Buy Now</button>
+        <button type="button" id="buy-nft" class="btn btn-primary">Buy Now</button>
        </div>
         <div th:if="${session.Login == null}">
         <p >You have to login  </p>
@@ -909,8 +786,220 @@ button:active {
     </footer>
   </div>
 
+ 
+ <script type="text/javascript">
+function showNfts() {
+    var myHeaders = new Headers();
+    myHeaders.append("x-api-key", "hmwMl_TgYEitVNxT");
 
-                              
+    var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+    };
+
+    fetch("https://api.shyft.to/sol/v1/marketplace/active_listings?network=devnet&marketplace_address=B4onhZgF5DZnEtpvjaXSz2CwFv5ADkEmPqwpmeLxU1sA", requestOptions)
+        .then(response => response.json())
+        .then(responseData => {
+            if (responseData.success && Array.isArray(responseData.result)) {
+                var nftContainer = document.getElementById("nftContainer");
+                nftContainer.innerHTML = ""; // Clear existing cards
+
+                responseData.result.forEach(nft => {
+                    // Create card element
+                    var card = document.createElement("div");
+                    card.className = "col-md-3 card11 ms-5 mt-4 mb-4";
+
+                    // Create card content
+                    var cardContent = `
+                        <div class="card11-int">
+                            <span class="card11__span">Category</span>
+                            <div style="background-color: #283542;" class="img-fluid text-center">
+                                <a style="text-decoration: none;">
+                                    <img src="${nft.nft.image_uri}" alt="..." 
+                                    class="img-fluid" style="height: 200px;"> 
+                                </a>
+                            </div>
+                            <div class="card11-data">
+                                <a  style="text-decoration: none;" >
+                                    <p class="title11 text-black">${nft.nft.name}</p>
+                                </a>
+                                <p>
+                                    <span class="fw-bold h5 text-primary">${nft.price}</span>
+                                    <img alt="" src="../images/icons8-solana-35.png">
+                                </p>
+                                <form action="#" method="POST">
+                                <button class="button11" onclick="confirmbuy('${nft.nft_address}', '${nft.price}', '${nft.seller_address}')" class="btn btn-primary button11" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button" >Buy Now</button>
+                                </form>
+                                <form action="/nft/detail/${nft.nft_address}" method="GET">
+                                <button class="button11" type="submit">Details</button>
+                            </form>
+                               
+                            </div>
+                        </div>
+                    `;
+
+                    card.innerHTML = cardContent;
+                    nftContainer.appendChild(card); // Append card to container
+                });
+            } else {
+                console.log("Unexpected response format:", responseData);
+            }
+        })
+        .catch(error => console.log('error', error));
+}
+showNfts();
+
+
+
+     let pulickey;
+    
+     const getProvider = async () => {
+       if ("solana" in window) {
+         await window.solana.connect(); // opens wallet to connect to
+
+         const provider = window.solana;
+         if (provider.isPhantom) {
+           let pro = provider.isPhantom
+           console.log("Is Phantom installed?  ", provider.isPhantom);  
+           return provider;
+         }
+       } else {
+
+    	 location.href="https://www.phantom.app/";
+      
+
+
+
+         document.write('Install https://www.phantom.app/');
+         location.href= "https://www.phantom.app/";
+
+
+    	 location.href="https://www.phantom.app/";
+
+
+       }
+     };
+
+
+     const connectToWallet = async () => {
+    	    const { solana } = window;
+    	    if (solana) {
+    	        try {
+    	            const response = await solana.connect();
+    	            const key = response.publicKey.toString();
+    	            console.log('Address:', key);
+
+    	            // Gửi publicKey tới backend
+    	            const requestOptions = {
+    	                method: 'GET',
+    	                headers: { 'Content-Type': 'application/json' },
+    	            };
+    	            await fetch(`/updatewallet/${key}`, requestOptions);
+
+    	            // Điều hướng người dùng đến "/home"
+    	            window.location.href = '/home';
+
+    	        } catch (error) {
+    	            console.error('Lỗi khi kết nối với ví Solana:', error);
+    	        }
+    	    }
+    	};
+
+    	function confirmbuy(adnft,price,seller)
+    	{
+    		
+    		
+    		document.getElementById('price').innerText = price;
+    		document.getElementById('nftaddress').value = adnft;
+    		document.getElementById('selleraddress').value = seller;
+    	}
+    	
+    	document.getElementById('buy-nft').addEventListener('click', async () => {
+    	    try {
+    	        const nftAddress = document.getElementById('nftaddress').value;
+    	        const priceText = document.getElementById('price').innerText;
+    	        const sellerAddress = document.getElementById('selleraddress').value;
+    	        const buyerWallet = document.getElementById('buyeraddress').value;
+
+    	        console.log('NFT Address:', nftAddress);
+    	        console.log('Price:', priceText);
+    	        console.log('Seller Address:', sellerAddress);
+    	        console.log('Buyer Wallet:', buyerWallet);
+
+    	        // Kiểm tra và chuyển đổi giá trị price
+    	        const price = parseFloat(priceText);
+    	        if (isNaN(price) || price <= 0) {
+    	            console.error('Giá không hợp lệ.');
+    	            return;
+    	        }
+
+    	        // Kiểm tra dữ liệu đầu vào
+    	        if (!nftAddress || !sellerAddress || !buyerWallet) {
+    	            console.error('Dữ liệu đầu vào không hợp lệ.');
+    	            return;
+    	        }
+
+    	        const myHeaders = new Headers();
+    	        myHeaders.append("x-api-key", "0ZZi5a0Eo89-knJM");
+    	        myHeaders.append("Content-Type", "application/json");
+
+    	        const raw = JSON.stringify({
+    	            "network": "devnet",
+    	            "marketplace_address": "B4onhZgF5DZnEtpvjaXSz2CwFv5ADkEmPqwpmeLxU1sA",
+    	            "nft_address": nftAddress,
+    	            "price": price,
+    	            "seller_address": sellerAddress,  // Đổi tên trường ở đây
+    	            "buyer_wallet": buyerWallet,
+    	            "service_charge": {
+    	                "receiver": buyerWallet,
+    	                "amount": 0.01
+    	            }
+    	        });
+
+    	        const requestOptions = {
+    	            method: 'POST',
+    	            headers: myHeaders,
+    	            body: raw,
+    	            redirect: 'follow'
+    	        };
+
+    	        const response = await fetch("https://api.shyft.to/sol/v1/marketplace/buy", requestOptions);
+    	        const result = await response.json();
+    	        console.log('Phản hồi API:', result);
+
+    	        if (!response.ok) {
+    	            throw new Error(result.message || 'Lỗi không xác định từ API');
+    	        }
+
+    	        const encodedTransaction = result.result.encoded_transaction;
+
+    	        if (encodedTransaction) {
+    	            const transactionBytes = Uint8Array.from(atob(encodedTransaction), c => c.charCodeAt(0));
+    	            console.log('Transaction bytes:', transactionBytes);
+
+    	            const transaction = solanaWeb3.Transaction.from(transactionBytes);
+    	            console.log('Transaction object:', transaction);
+
+    	            const signedTransaction = await window.solana.signTransaction(transaction);
+    	            console.log('Signed transaction:', signedTransaction);
+
+    	            const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('devnet'), 'confirmed');
+    	            const txid = await connection.sendRawTransaction(signedTransaction.serialize());
+    	            console.log('Transaction sent with ID:', txid);
+    	        } else {
+    	            console.error('Không có encoded transaction trả về từ API');
+    	        }
+    	    } catch (error) {
+    	        console.log('Lỗi:', error);
+    	    }
+    	});
+
+
+
+   
+  </script>
+        <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>                      
 
 </body>
 
