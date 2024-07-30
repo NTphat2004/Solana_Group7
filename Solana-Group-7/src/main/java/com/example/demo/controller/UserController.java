@@ -73,15 +73,19 @@ public class UserController {
 	
 	@GetMapping("/user/disconnect")
 	public String getMethodName11111111(Model model,@RequestParam("useridne") Integer iduser) {
-//		System.out.println("disconnect");
-//		System.out.println("ga " + iduser);
+
 		
 		Optional<Users> u = userdao.findById(iduser);
 		Users user = u.get();
 		user.setWalletAddress(null);
 		userdao.save(user);
 		session.setAttribute("Login", user);
-		System.out.println("xóa ví thành công");
+		
 		return "redirect:/home";
+	}
+	
+	@GetMapping("/user/createnft")
+	public String getMethodName() {
+		return "CreateNFT";
 	}
 }

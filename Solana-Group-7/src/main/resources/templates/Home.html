@@ -710,7 +710,7 @@ button:active {
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">Do you really want to buy this NFT</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" id="closene" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
        <div th:if="${session.Login != null && #strings.isEmpty(session.Login.walletAddress)}">
@@ -933,7 +933,9 @@ showNfts();
     	}
     	
     	document.getElementById('buy-nft').addEventListener('click', async () => {
+    		  const myButton = document.getElementById('closene');
     	    try {
+    	    	
     	        const nftAddress = document.getElementById('nftaddress').value;
     	        const priceText = document.getElementById('price').innerText;
     	        const sellerAddress = document.getElementById('selleraddress').value;
@@ -1004,11 +1006,16 @@ showNfts();
     	            const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('devnet'), 'confirmed');
     	            const txid = await connection.sendRawTransaction(signedTransaction.serialize());
     	            console.log('Transaction sent with ID:', txid);
+    	            alert("List Success");
+    	            myButton.click();
     	        } else {
     	            console.error('Không có encoded transaction trả về từ API');
+    	            
+    	            alert("List Fail");
     	        }
     	    } catch (error) {
     	        console.log('Lỗi:', error);
+    	        alert("List Fail");
     	    }
     	});
 

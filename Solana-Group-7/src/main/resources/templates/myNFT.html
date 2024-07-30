@@ -590,7 +590,7 @@ button:active {
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">How many coin do you want to lits</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" id="closene" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <p >You are listing <span class="text-danger" id="nftName"></span> </p>
@@ -674,7 +674,7 @@ button:active {
         
      // Giả sử biến này chứa địa chỉ ví
         let walletAddress = document.getElementById("walletkkk").value; // Thay đổi giá trị này theo địa chỉ ví của bạn
-
+        const myButton = document.getElementById('closene');
         document.getElementById('list-nft').addEventListener('click', async () => {
             try {
                 var pricenft = parseFloat(document.getElementById('pricenft').value); // Đảm bảo giá là số
@@ -733,10 +733,17 @@ button:active {
                     const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('devnet'), 'confirmed');
                     const txid = await connection.sendRawTransaction(signedTransaction.serialize());
                     console.log('Transaction sent with ID:', txid);
+                    myButton.click();
+                    alert("List Success");
+                    
+                    //thêm code truyền NFT vào đây
+                    
+                    
                 } else {
                     console.error('Không có encoded transaction trả về từ API');
                 }
             } catch (error) {
+            	alert("List Fail");
                 console.log('Lỗi:', error);
             }
         });
